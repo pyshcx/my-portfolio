@@ -1,33 +1,65 @@
-// components/Contact.jsx
-"use client"; // Add this line at the very top of the file
+"use client";
+
+import { FaLinkedin, FaInstagram, FaTwitter } from "react-icons/fa"; // Import icons for LinkedIn, Instagram, and Twitter
 
 const Contact = () => (
-  <section id="contact" className="py-16 bg-white dark:bg-gray-800">
-    <div className="container mx-auto px-4">
-      <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Contact</h2>
-      <form action="#" method="POST" className="mt-8 max-w-lg mx-auto space-y-4">
-        <input
-          type="text"
-          placeholder="Your Name"
-          required
-          className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500"
-        />
-        <input
-          type="email"
-          placeholder="Your Email"
-          required
-          className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500"
-        />
-        <textarea
-          placeholder="Your Message"
-          rows={5}
-          required
-          className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500"
-        ></textarea>
-        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded">
-          Send Message
-        </button>
-      </form>
+  <section
+    id="contact"
+    className="py-16 bg-cover bg-center relative"
+    style={{
+      backgroundImage: "url('//lidar-bg.jpg')", // Ensure this image is saved in the public/images folder
+    }}
+  >
+    {/* Overlay for better contrast */}
+    <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+
+    {/* Content */}
+    <div className="relative z-10 container mx-auto max-w-lg text-center">
+      <h2 className="text-4xl font-bold text-lidar-teal mb-6">Get In Touch</h2>
+      <p className="text-lg text-gray-300 mb-8">
+        Feel free to reach out via email or connect with me on social media.
+      </p>
+
+      {/* Contact Buttons */}
+      <div className="flex justify-center space-x-4">
+        {/* Email Button */}
+        <a
+          href="mailto:pranayshah1908@gmail.com"
+          className="bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
+        >
+          Email Me
+        </a>
+
+        {/* LinkedIn Button */}
+        <a
+          href="https://www.linkedin.com/in/pranayshah19/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
+        >
+          <FaLinkedin className="mr-2" /> LinkedIn
+        </a>
+
+        {/* Instagram Button */}
+        <a
+          href="https://www.instagram.com/pranayshah19/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
+        >
+          <FaInstagram className="mr-2" /> Instagram
+        </a>
+
+        {/* Twitter Button */}
+        <a
+          href="https://twitter.com/pyshcx/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
+        >
+          <FaTwitter className="mr-2" /> Twitter
+        </a>
+      </div>
     </div>
   </section>
 );

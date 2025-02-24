@@ -1,9 +1,10 @@
+// src/app/page.tsx
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
 import Projects from './components/Projects';
+import Experiences from './components/Experiences';
 import Contact from './components/Contact';
-import Experiences from './components/Experience';
 
 export default function Page() {
   return (
@@ -11,8 +12,8 @@ export default function Page() {
       <Navbar />
       <Home />
       <About />
-      <Projects />
       <Experiences />
+      <Projects />
       <Contact />
     </div>
   );

@@ -19,3 +19,15 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Tailwind classes */
+.bg-lidar-teal {
+  background-color: #00FFD1;
+}
+.hover\:bg-lidar-darkTeal:hover {
+  background-color: #005F50;
+}
+.text-black {
+  color: #000000;
+}
+

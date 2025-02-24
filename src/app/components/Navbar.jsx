@@ -1,59 +1,32 @@
-// components/Navbar.jsx
-"use client"; // This makes the component a Client Component
+"use client";
 
-import { useState } from "react";
+import { HiMail } from "react-icons/hi"; // Import mail icon from react-icons
 
 const Navbar = () => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Function to toggle dark mode
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle("dark"); // Toggles the 'dark' class on the <html> element
-  };
-
   return (
-    <nav className="bg-gray-800 text-white p-4 fixed w-full top-0 z-10 shadow-lg">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="bg-lidar-black text-lidar-white fixed w-full top-0 z-10 shadow-lg">
+      <div className="container mx-auto flex justify-between items-center p-4">
         {/* Logo */}
-        <h1 className="text-2xl font-bold">My Portfolio</h1>
+        <h1 className="text-2xl font-bold">Pranay Shah</h1>
 
         {/* Navigation Links */}
-        <ul className="flex space-x-6">
-          <li>
-            <a href="#home" className="hover:text-gray-400">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#about" className="hover:text-gray-400">
-              About
-            </a>
-          </li>
-          <li>
-            <a href="#experience" className="hover:text-gray-400">
-              Experience
-            </a>
-          </li>
-          <li>
-            <a href="#projects" className="hover:text-gray-400">
-              Projects
-            </a>
-          </li>
-          <li>
-            <a href="#contact" className="hover:text-gray-400">
-              Contact
-            </a>
-          </li>
+        <ul className="hidden md:flex space-x-6">
+          {["Home", "About", "Experience", "Projects", "Contact"].map((item) => (
+            <li key={item}>
+              <a href={`#${item.toLowerCase()}`} className="hover:text-lidar-teal">
+                {item}
+              </a>
+            </li>
+          ))}
         </ul>
 
-        {/* Dark Mode Toggle Button */}
-        <button
-          onClick={toggleDarkMode}
-          className="ml-4 bg-gray-700 p-2 rounded-full hover:bg-gray-600"
+        {/* Email Option */}
+        <a
+          href="mailto:pranayshah1908@gmail.com"
+          className="flex items-center bg-lidar-teal text-black py-2 px-4 rounded-lg hover:bg-lidar-darkTeal transition"
         >
-          {darkMode ? "☀️" : "🌙"}
-        </button>
+          <HiMail className="mr-2 text-xl" /> Email Me
+        </a>
       </div>
     </nav>
   );
