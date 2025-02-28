@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaGraduationCap } from "react-icons/fa";
 
-const Experiences = () => {
+const Education = () => {
   const scrollRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
@@ -48,45 +48,43 @@ const Experiences = () => {
     }
   };
 
-  const experiences = [
+  const educations = [
     {
-      title: "Path Planning Head - Team Ojas Racing",
-      date: "Mar 2023 - Present",
-      points: [
-        "Developed a path planning algorithm using Delaunay Triangulation for autonomous navigation.",
-        "Implemented YOLO for real-time object detection, improving obstacle avoidance.",
-      ],
+      degree: "B.Tech in Computer Science",
+      institution: "Vellore Institute of Technology (VIT)",
+      duration: "2022 - 2026",
+      description: "Specializing in AI/ML and Computer Vision with a focus on autonomous systems.",
+      achievements: [
+        "CGPA: 8.63/10",
+        "Member of Autonomous Research Center (ARC)",
+        "Path Planning Lead of Team Ojas Racing"
+      ]
     },
     {
-      title: "Researcher - ARC (Autonomous Research Center), VIT",
-      date: "Jan 2024 - Present",
-      points: [
-        "Working on a self-driving car project, focusing on autonomous navigation.",
-        "Currently developing applications using ROS2 for real-time control.",
-      ],
-    },
-    {
-      title: "AI/ML Intern - MedAI Technologies",
-      date: "Sep 2024 - Nov 2024",
-      points: [
-        "Integrated computer vision technology into a kiosk system.",
-        "Conducted research on AI/ML models for medical diagnostics.",
-      ],
+      degree: "Higher Secondary Education",
+      institution: "DAV International School",
+      duration: "2020 - 2022",
+      description: "Focused on Physics, Chemistry, and Mathematics with Computer Science.",
+      achievements: [
+        "Class 12th: 88%",
+        "Class 10th: 94%"
+      ]
     },
   ];
 
   return (
     <section
-      id="experience"
+      id="education"
       className="py-16 bg-cover bg-center relative"
       style={{
         backgroundImage: "url('/images/lidar-bg.jpg')",
       }}
     >
+      {/* Overlay for better contrast */}
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       
       <div className="relative z-10 container mx-auto px-6">
-        <h2 className="text-4xl font-bold text-lidar-teal text-center mb-12">Experience</h2>
+        <h2 className="text-4xl font-bold text-lidar-teal text-center mb-12">Education</h2>
         
         <div className="relative">
           <div 
@@ -100,38 +98,54 @@ const Experiences = () => {
               scrollBehavior: 'smooth'
             }}
           >
-            {experiences.map((experience, index) => (
+            {educations.map((education, index) => (
               <div
                 key={index}
                 className="bg-lidar-black bg-opacity-70 p-6 rounded-lg shadow-lg min-w-[300px] md:min-w-[400px] flex-shrink-0 hover:scale-[1.02] transform transition duration-300"
               >
-                <h3 className="text-xl font-semibold text-lidar-teal mb-2">
-                  {experience.title}
-                </h3>
-                <p className="text-sm text-gray-400 mb-4">{experience.date}</p>
-                <ul className="list-disc ml-5 space-y-2 text-gray-300">
-                  {experience.points.map((point, i) => (
-                    <li key={i}>{point}</li>
-                  ))}
-                </ul>
+                <div className="flex items-center mb-3">
+                  <FaGraduationCap className="text-lidar-teal text-2xl mr-3" />
+                  <h3 className="text-xl font-semibold text-lidar-teal">
+                    {education.degree}
+                  </h3>
+                </div>
+                <p className="text-white font-medium mb-1">{education.institution}</p>
+                <p className="text-sm text-gray-400 mb-3">{education.duration}</p>
+                <p className="text-gray-300 mb-4">{education.description}</p>
+                <div>
+                  <h4 className="text-sm font-semibold text-lidar-teal mb-2">Achievements:</h4>
+                  <ul className="list-disc ml-5 space-y-1 text-gray-300">
+                    {education.achievements.map((achievement, i) => (
+                      <li key={i}>{achievement}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
             
             {/* Duplicate cards for infinite scrolling effect */}
-            {experiences.map((experience, index) => (
+            {educations.map((education, index) => (
               <div
                 key={`duplicate-${index}`}
                 className="bg-lidar-black bg-opacity-70 p-6 rounded-lg shadow-lg min-w-[300px] md:min-w-[400px] flex-shrink-0 hover:scale-[1.02] transform transition duration-300"
               >
-                <h3 className="text-xl font-semibold text-lidar-teal mb-2">
-                  {experience.title}
-                </h3>
-                <p className="text-sm text-gray-400 mb-4">{experience.date}</p>
-                <ul className="list-disc ml-5 space-y-2 text-gray-300">
-                  {experience.points.map((point, i) => (
-                    <li key={i}>{point}</li>
-                  ))}
-                </ul>
+                <div className="flex items-center mb-3">
+                  <FaGraduationCap className="text-lidar-teal text-2xl mr-3" />
+                  <h3 className="text-xl font-semibold text-lidar-teal">
+                    {education.degree}
+                  </h3>
+                </div>
+                <p className="text-white font-medium mb-1">{education.institution}</p>
+                <p className="text-sm text-gray-400 mb-3">{education.duration}</p>
+                <p className="text-gray-300 mb-4">{education.description}</p>
+                <div>
+                  <h4 className="text-sm font-semibold text-lidar-teal mb-2">Achievements:</h4>
+                  <ul className="list-disc ml-5 space-y-1 text-gray-300">
+                    {education.achievements.map((achievement, i) => (
+                      <li key={i}>{achievement}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
@@ -164,4 +178,4 @@ const Experiences = () => {
   );
 };
 
-export default Experiences;
+export default Education;

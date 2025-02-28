@@ -1,13 +1,13 @@
 "use client";
 
-import { FaLinkedin, FaInstagram, FaTwitter } from "react-icons/fa"; // Import icons for LinkedIn, Instagram, and Twitter
+import { FaLinkedin, FaInstagram, FaTwitter, FaGithub } from "react-icons/fa"; // Import icons for LinkedIn, Instagram, Twitter, and GitHub
 
 const Contact = () => (
   <section
     id="contact"
     className="py-16 bg-cover bg-center relative"
     style={{
-      backgroundImage: "url('//lidar-bg.jpg')", // Ensure this image is saved in the public/images folder
+      backgroundImage: "url('/images/lidar-bg.jpg')", // Ensure this image is saved in the public/images folder
     }}
   >
     {/* Overlay for better contrast */}
@@ -17,17 +17,19 @@ const Contact = () => (
     <div className="relative z-10 container mx-auto max-w-lg text-center">
       <h2 className="text-4xl font-bold text-lidar-teal mb-6">Get In Touch</h2>
       <p className="text-lg text-gray-300 mb-8">
-        Feel free to reach out via email or connect with me on social media.
+        Feel free to connect with me on GitHub or social media platforms.
       </p>
 
       {/* Contact Buttons */}
       <div className="flex justify-center space-x-4">
-        {/* Email Button */}
+        {/* GitHub Button */}
         <a
-          href="mailto:pranayshah1908@gmail.com"
-          className="bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
+          href="https://github.com/pyshcx"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
         >
-          Email Me
+          <FaGithub className="mr-2" /> GitHub
         </a>
 
         {/* LinkedIn Button */}

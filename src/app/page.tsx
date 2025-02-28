@@ -2,8 +2,9 @@
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
-import Projects from './components/Projects';
 import Experiences from './components/Experiences';
+import Projects from './components/Projects';
+import Education from './components/Education';
 import Contact from './components/Contact';
 
 export default function Page() {
@@ -14,6 +15,7 @@ export default function Page() {
       <About />
       <Experiences />
       <Projects />
+      <Education />
       <Contact />
     </div>
   );
