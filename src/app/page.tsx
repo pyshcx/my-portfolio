@@ -6,10 +6,13 @@ import Experiences from './components/Experiences';
 import Projects from './components/Projects';
 import Education from './components/Education';
 import Contact from './components/Contact';
-
+import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
+import PageLoader from './components/PageLoader';
 export default function Page() {
   return (
     <div>
+      <PageLoader />
       <Navbar />
       <Home />
       <About />
@@ -17,6 +20,8 @@ export default function Page() {
       <Projects />
       <Education />
       <Contact />
+      <Footer />
+      <ScrollToTop />
     </div>
   );
 }

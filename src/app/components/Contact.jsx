@@ -1,6 +1,6 @@
 "use client";
 
-import { FaLinkedin, FaInstagram, FaTwitter, FaGithub } from "react-icons/fa"; // Import icons for LinkedIn, Instagram, Twitter, and GitHub
+import { FaPhone, FaEnvelope } from "react-icons/fa"; // Import phone and email icons
 
 const Contact = () => (
   <section
@@ -15,51 +15,29 @@ const Contact = () => (
 
     {/* Content */}
     <div className="relative z-10 container mx-auto max-w-lg text-center">
-      <h2 className="text-4xl font-bold text-lidar-teal mb-6">Get In Touch</h2>
+      <h2 className="text-4xl font-bold text-lidar-teal mb-6">Contact Me</h2>
       <p className="text-lg text-gray-300 mb-8">
-        Feel free to connect with me on GitHub or social media platforms.
+        Feel free to reach out directly via phone or email.
       </p>
 
-      {/* Contact Buttons */}
-      <div className="flex justify-center space-x-4">
-        {/* GitHub Button */}
+      {/* Contact Icons */}
+      <div className="flex justify-center space-x-8">
+        {/* Email Icon */}
         <a
-          href="https://github.com/pyshcx"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
+          href="mailto:pranayshah1908@gmail.com"
+          className="bg-lidar-teal hover:bg-lidar-darkTeal text-black p-4 rounded-full transition transform hover:scale-110"
+          title="Send Email"
         >
-          <FaGithub className="mr-2" /> GitHub
+          <FaEnvelope className="text-2xl" />
         </a>
 
-        {/* LinkedIn Button */}
+        {/* Phone Icon */}
         <a
-          href="https://www.linkedin.com/in/pranayshah19/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
+          href="tel:+918866092052" // Replace with your actual phone number
+          className="bg-lidar-teal hover:bg-lidar-darkTeal text-black p-4 rounded-full transition transform hover:scale-110"
+          title="Call Me"
         >
-          <FaLinkedin className="mr-2" /> LinkedIn
-        </a>
-
-        {/* Instagram Button */}
-        <a
-          href="https://www.instagram.com/pranayshah19/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
-        >
-          <FaInstagram className="mr-2" /> Instagram
-        </a>
-
-        {/* Twitter Button */}
-        <a
-          href="https://twitter.com/pyshcx/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center bg-lidar-teal hover:bg-lidar-darkTeal text-black py-3 px-6 rounded-lg transition font-bold"
-        >
-          <FaTwitter className="mr-2" /> Twitter
+          <FaPhone className="text-2xl" />
         </a>
       </div>
     </div>

@@ -65,7 +65,7 @@ const Projects = () => {
       title: "Delaunay Triangulation",
       description:
         "Developed a path planning algorithm using Delaunay Triangulation for autonomous navigation.",
-      githubLink: "https://github.com/pyshcx/volumetracking",
+      githubLink: "https://github.com/pyshcx/DelaunyTriangulation",
     },
     {
       title: "Computer Vision Projects",
