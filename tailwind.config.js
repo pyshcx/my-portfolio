@@ -1,20 +1,22 @@
-// tailwind.config.js
 module.exports = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        lidar: {
-          black: "#0C0C0C", // Deep black for backgrounds
-          teal: "#00FFD1", // Teal green for highlights
-          white: "#FFFFFF", // White for text
-          darkTeal: "#005F50", // Dark teal for hover effects
+        primary: {
+          navy: "#1E3D58",
+          blue: "#3A6EA5",
+          teal: "#00BFA6",
+          lightTeal: "#82E9F5",
         },
+        text: {
+          dark: "#333333",
+          light: "#F5F5F5",
+          gray: "#D3D3D3",
+        }
       },
       backgroundImage: {
-        lidarBg: "url('/lidar-bg.jpg')", // Reference your LiDAR-inspired image here
+        'gradient-primary': 'linear-gradient(to bottom right, var(--tw-gradient-stops))',
       },
     },
   },

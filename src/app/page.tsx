@@ -9,19 +9,28 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import PageLoader from './components/PageLoader';
+
+
 export default function Page() {
   return (
-    <div>
+    <main className="min-h-screen overflow-hidden">
       <PageLoader />
       <Navbar />
-      <Home />
-      <About />
-      <Experiences />
-      <Projects />
-      <Education />
-      <Contact />
+      <div className="continuous-content">
+        <Home />
+        <div className="section-divider" />
+        <About />
+        <div className="section-divider" />
+        <Experiences />
+        <div className="section-divider" />
+        <Projects />
+        <div className="section-divider" />
+        <Education />
+        <div className="section-divider" />
+        <Contact />
+      </div>
       <Footer />
       <ScrollToTop />
-    </div>
+    </main>
   );
 }

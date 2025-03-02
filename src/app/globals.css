@@ -3,32 +3,63 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-navy: #1E3D58;
+  --color-blue: #3A6EA5;
+  --color-teal: #00BFA6;
+  --color-light-teal: #82E9F5;
+  --color-dark: #333333;
+  --color-light: #F5F5F5;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
+  scroll-behavior: smooth;
+  background-attachment: fixed;
 }
 
-/* Tailwind classes */
-.bg-lidar-teal {
-  background-color: #00FFD1;
+@layer components {
+  .section-gradient {
+    @apply bg-gradient-to-br from-[#1E3D58] via-[#3A6EA5] to-[#00BFA6];
+  }
+  
+  .section-title {
+    @apply text-4xl font-bold text-[#333333] text-center mb-12;
+  }
+  
+  .section-text {
+    @apply text-lg text-[#333333] leading-relaxed;
+  }
+  
+  .card {
+    @apply bg-white bg-opacity-10 backdrop-blur-md p-6 rounded-xl shadow-xl border border-[#00BFA6]/20;
+  }
+  
+  .btn-primary {
+    @apply bg-[#00BFA6] text-white py-2 px-4 rounded-lg hover:bg-[#82E9F5] hover:text-[#333333] transition-all duration-300;
+  }
+  
+  .btn-rounded {
+    @apply bg-[#00BFA6] text-white py-3 px-8 rounded-full hover:bg-[#82E9F5] hover:text-[#333333] transition-all duration-300;
+  }
+  
+  .icon-teal {
+    @apply text-[#00BFA6];
+  }
+  
+  .text-dark {
+    @apply text-[#333333];
+  }
+  
+  .text-light {
+    @apply text-[#F5F5F5];
+  }
 }
-.hover\:bg-lidar-darkTeal:hover {
-  background-color: #005F50;
-}
-.text-black {
-  color: #000000;
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
 }
 
 .bouncing-loader {
@@ -41,9 +72,9 @@ body {
   height: 16px;
   margin: 3px 6px;
   border-radius: 50%;
-  background-color: #00FFD1; /* lidar-teal color */
+  background-color: #00BFA6;
   opacity: 1;
-  animation: bouncing-loader 0.4s infinite alternate;
+  animation: bouncing-loader 0.6s infinite alternate;
 }
 
 @keyframes bouncing-loader {
@@ -58,5 +89,30 @@ body {
 }
 
 .bouncing-loader > div:nth-child(3) {
-  animation-delay: 0.2s;
+  animation-delay: 0.4s;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .section-title {
+    @apply text-3xl;
+  }
+  
+  .section-text {
+    @apply text-base;
+  }
+}
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(0, 191, 166, 0.3), transparent);
+  margin: 0 auto;
+  width: 80%;
+  max-width: 800px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
