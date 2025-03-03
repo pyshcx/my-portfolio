@@ -100,16 +100,6 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href="https://drive.google.com/file/d/1Co3ZfjDaFMoMStNIHVbYA8njctI4YOCa/view?usp=drive_link"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mr-4 bg-[#00BFA6] text-white py-1.5 px-3 rounded-lg hover:bg-[#82E9F5] hover:text-[#333333] transition-all duration-300"
-            >
-              <HiDocumentText className="mr-1 text-lg inline" /> CV
-            </motion.a>
             <motion.button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-[#F5F5F5] bg-[rgba(0,191,166,0.2)] p-2 rounded-lg backdrop-blur-sm focus:outline-none"
@@ -162,6 +152,19 @@ const Navbar = () => {
                     </a>
                   </motion.li>
                 ))}
+                <motion.li className="py-3 w-full text-center">
+                  <motion.a
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    href="https://drive.google.com/file/d/1Co3ZfjDaFMoMStNIHVbYA8njctI4YOCa/view?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center bg-[#00BFA6] text-white py-2 px-4 rounded-lg hover:bg-[#82E9F5] hover:text-[#333333] transition-all duration-300"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <HiDocumentText className="mr-2 text-xl" /> Resume
+                  </motion.a>
+                </motion.li>
               </ul>
             </motion.div>
           )}

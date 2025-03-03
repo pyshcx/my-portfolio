@@ -1,43 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { FaChevronLeft, FaChevronRight, FaGraduationCap } from "react-icons/fa";
+import { useRef, useState, useEffect } from "react";
+import { FaGraduationCap, FaAward, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import SectionWrapper from './SectionWrapper';
 import { motion } from 'framer-motion';
 
 const Education = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const scrollRef = useRef(null);
-  const [isHovering, setIsHovering] = useState(false);
-  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
-
-  // Auto-scroll functionality for horizontal scrolling
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    let scrollInterval;
-    if (scrollContainer && !isHovering && autoScrollEnabled) {
-      scrollInterval = setInterval(() => {
-        if (scrollContainer.scrollLeft + scrollContainer.clientWidth >= scrollContainer.scrollWidth) {
-          scrollContainer.scrollLeft = 0;
-        } else {
-          scrollContainer.scrollLeft += 2;
-        }
-      }, 30);
-    }
-    return () => {
-      if (scrollInterval) clearInterval(scrollInterval);
-    };
-  }, [isHovering, autoScrollEnabled]);
-
-  const scroll = (direction) => {
-    if (scrollRef.current) {
-      setAutoScrollEnabled(false);
-      const { current } = scrollRef;
-      const scrollAmount = direction === "left" ? -300 : 300;
-      current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-      setTimeout(() => setAutoScrollEnabled(true), 1000);
-    }
-  };
-
+  
   // Education data
   const educations = [
     {
@@ -60,6 +34,50 @@ const Education = () => {
     },
   ];
 
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
+
+  // Handle touch events for swiping
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 50) {
+      // Swipe left
+      if (activeIndex < educations.length - 1) {
+        setActiveIndex(activeIndex + 1);
+      }
+    }
+    
+    if (touchStart - touchEnd < -50) {
+      // Swipe right
+      if (activeIndex > 0) {
+        setActiveIndex(activeIndex - 1);
+      }
+    }
+  };
+
+  // Handle dot navigation
+  const handleDotClick = (index) => {
+    setActiveIndex(index);
+  };
+
   return (
     <SectionWrapper id="education">
       <motion.div
@@ -70,28 +88,87 @@ const Education = () => {
       >
         <h2 className="text-4xl font-bold text-[#333333] text-center mb-12">Education</h2>
         
-        <div className="bg-white bg-opacity-5 backdrop-blur-sm p-6 md:p-8 rounded-xl border border-[#00BFA6]/10 shadow-xl mb-6">
-          <div className="relative">
-            <div
-              className="flex overflow-x-auto scrollbar-hide gap-4 md:gap-6 pb-4 relative"
-              ref={scrollRef}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-              style={{
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-                scrollBehavior: "smooth",
-              }}
+        {/* Mobile Swipeable Cards */}
+        {isMobile && (
+          <div className="relative px-4">
+            <div 
+              className="overflow-hidden"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
+              <div 
+                className="flex transition-transform duration-300 ease-in-out"
+                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+              >
+                {educations.map((education, index) => (
+                  <div key={index} className="w-full flex-shrink-0">
+                    <motion.div
+                      className="bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 min-h-[420px] flex flex-col"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="flex items-center mb-4">
+                        <div className="bg-[#00BFA6] bg-opacity-10 p-2 rounded-full mr-3">
+                          <FaGraduationCap className="text-[#00BFA6] text-2xl" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold text-[#333333]">{education.degree}</h3>
+                          <p className="text-[#333333] opacity-90">{education.institution}</p>
+                        </div>
+                      </div>
+                      <div className="bg-[#00BFA6]/5 px-3 py-1 rounded-full inline-block mb-3">
+                        <p className="text-sm text-[#333333] italic">{education.duration}</p>
+                      </div>
+                      <p className="text-[#333333] mb-4">{education.description}</p>
+                      <div>
+                        <h4 className="text-lg font-semibold text-[#333333] mb-2 flex items-center">
+                          <FaAward className="text-[#00BFA6] mr-2 text-sm" />
+                          Achievements:
+                        </h4>
+                        <ul className="list-disc ml-6 space-y-1 text-[#333333]">
+                          {education.achievements.map((achievement, i) => (
+                            <li key={i} className="text-base">{achievement}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </motion.div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Dots for navigation */}
+            <div className="flex justify-center mt-6 space-x-2">
+              {educations.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleDotClick(index)}
+                  className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                    activeIndex === index ? 'bg-[#00BFA6]' : 'bg-gray-300'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {/* Desktop Layout */}
+        {!isMobile && (
+          <div className="bg-white bg-opacity-5 backdrop-blur-sm p-6 md:p-8 rounded-xl border border-[#00BFA6]/10 shadow-xl mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {educations.map((education, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 min-w-[280px] sm:min-w-[320px] md:min-w-[400px] flex-shrink-0 transform transition duration-300"
+                  className="bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-full flex flex-col"
                   whileHover={{ 
                     scale: 1.03, 
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                     borderColor: "rgba(0, 191, 166, 0.3)"
                   }}
+                  transition={{ duration: 0.3 }}
                 >
                   <div className="flex items-center mb-4">
                     <div className="bg-[#00BFA6] bg-opacity-10 p-2 rounded-full mr-3">
@@ -102,47 +179,13 @@ const Education = () => {
                       <p className="text-[#333333] opacity-90">{education.institution}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-[#333333] mb-3 italic">{education.duration}</p>
-                  <p className="text-[#333333] mb-4">{education.description}</p>
-                  <div>
-                    <h4 className="text-lg font-semibold text-[#333333] mb-2 flex items-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00BFA6] mr-2"></span>
-                      Achievements:
-                    </h4>
-                    <ul className="list-disc ml-6 space-y-1 text-[#333333]">
-                      {education.achievements.map((achievement, i) => (
-                        <li key={i} className="text-base">{achievement}</li>
-                      ))}
-                    </ul>
+                  <div className="bg-[#00BFA6]/5 px-3 py-1 rounded-full inline-block mb-3 w-fit">
+                    <p className="text-sm text-[#333333] italic">{education.duration}</p>
                   </div>
-                </motion.div>
-              ))}
-              
-              {/* Duplicate cards for infinite scrolling effect */}
-              {educations.map((education, index) => (
-                <motion.div
-                  key={`dup-${index}`}
-                  className="bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 min-w-[280px] sm:min-w-[320px] md:min-w-[400px] flex-shrink-0 transform transition duration-300"
-                  whileHover={{ 
-                    scale: 1.03, 
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    borderColor: "rgba(0, 191, 166, 0.3)"
-                  }}
-                >
-                  <div className="flex items-center mb-4">
-                    <div className="bg-[#00BFA6] bg-opacity-10 p-2 rounded-full mr-3">
-                      <FaGraduationCap className="text-[#00BFA6] text-2xl" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-[#333333]">{education.degree}</h3>
-                      <p className="text-[#333333] opacity-90">{education.institution}</p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-[#333333] mb-3 italic">{education.duration}</p>
                   <p className="text-[#333333] mb-4">{education.description}</p>
-                  <div>
+                  <div className="mt-auto">
                     <h4 className="text-lg font-semibold text-[#333333] mb-2 flex items-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00BFA6] mr-2"></span>
+                      <FaAward className="text-[#00BFA6] mr-2 text-sm" />
                       Achievements:
                     </h4>
                     <ul className="list-disc ml-6 space-y-1 text-[#333333]">
@@ -154,37 +197,8 @@ const Education = () => {
                 </motion.div>
               ))}
             </div>
-            
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-y-0 left-0 w-12 md:w-20 pointer-events-none" style={{
-              background: "linear-gradient(to right, rgba(30,61,88,0.9) 0%, rgba(30,61,88,0) 100%)"
-            }}></div>
-            
-            <div className="absolute inset-y-0 right-0 w-12 md:w-20 pointer-events-none" style={{
-              background: "linear-gradient(to left, rgba(30,61,88,0.9) 0%, rgba(30,61,88,0) 100%)"
-            }}></div>
-            
-            {/* Navigation buttons */}
-            <motion.button 
-              onClick={() => scroll("left")}
-              className="absolute left-1 md:left-4 top-1/2 transform -translate-y-1/2 bg-[#00BFA6] p-2 md:p-3 rounded-full z-20 hover:bg-[#82E9F5] transition cursor-pointer shadow-lg"
-              aria-label="Scroll left"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <FaChevronLeft className="text-[#1E3D58]" />
-            </motion.button>
-            <motion.button 
-              onClick={() => scroll("right")}
-              className="absolute right-1 md:right-4 top-1/2 transform -translate-y-1/2 bg-[#00BFA6] p-2 md:p-3 rounded-full z-20 hover:bg-[#82E9F5] transition cursor-pointer shadow-lg"
-              aria-label="Scroll right"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <FaChevronRight className="text-[#1E3D58]" />
-            </motion.button>
           </div>
-        </div>
+        )}
       </motion.div>
     </SectionWrapper>
   );
