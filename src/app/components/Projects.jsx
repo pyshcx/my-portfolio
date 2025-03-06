@@ -178,7 +178,6 @@ const Projects = () => {
             {/* Auto-scroll indicator */}
             <div className="flex justify-center mt-2">
               <div className="text-xs text-[#333333] opacity-70">
-                {!isPaused ? 'Auto-scrolling' : 'Paused'}
               </div>
             </div>
           </div>
