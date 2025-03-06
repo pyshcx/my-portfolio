@@ -10,6 +10,7 @@ const Education = () => {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const scrollRef = useRef(null);
   
   // Education data
@@ -48,8 +49,28 @@ const Education = () => {
     };
   }, []);
 
+  // Auto-scroll functionality
+  useEffect(() => {
+    let autoScrollInterval;
+    
+    if (isMobile && !isPaused) {
+      autoScrollInterval = setInterval(() => {
+        setActiveIndex((prevIndex) => 
+          prevIndex === educations.length - 1 ? 0 : prevIndex + 1
+        );
+      }, 5000); // Change slide every 5 seconds
+    }
+    
+    return () => {
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+      }
+    };
+  }, [isMobile, isPaused, educations.length]);
+
   // Handle touch events for swiping
   const handleTouchStart = (e) => {
+    setIsPaused(true); // Pause auto-scroll when user interacts
     setTouchStart(e.targetTouches[0].clientX);
   };
   
@@ -71,11 +92,17 @@ const Education = () => {
         setActiveIndex(activeIndex - 1);
       }
     }
+    
+    // Resume auto-scroll after a delay
+    setTimeout(() => setIsPaused(false), 5000);
   };
 
   // Handle dot navigation
   const handleDotClick = (index) => {
+    setIsPaused(true);
     setActiveIndex(index);
+    // Resume auto-scroll after a delay
+    setTimeout(() => setIsPaused(false), 5000);
   };
 
   return (

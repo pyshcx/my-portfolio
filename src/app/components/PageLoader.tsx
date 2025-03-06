@@ -1,17 +1,10 @@
 "use client";
 import React from 'react';
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useLoading } from './LoadingContext';
 
 const PageLoader = () => {
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000); // Reduced to 2 seconds for better UX
-    return () => clearTimeout(timer);
-  }, []);
+  const { loading } = useLoading();
   
   if (!loading) return null;
   
