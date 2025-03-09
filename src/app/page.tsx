@@ -1,4 +1,3 @@
-// src/app/page.tsx
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -14,6 +13,7 @@ import ScrollToTop from './components/ScrollToTop';
 import PageLoader from './components/PageLoader';
 import { LoadingProvider } from './components/LoadingContext';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +50,7 @@ export default function Page() {
           </>
         )}
         <Analytics />
+        <SpeedInsights />
         <ScrollToTop />
       </main>
     </LoadingProvider>
