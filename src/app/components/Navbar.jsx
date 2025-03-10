@@ -19,7 +19,8 @@ const Navbar = () => {
         setScrolled(false);
       }
 
-      const sections = ["home", "about", "experience", "projects", "education", "contact"];
+      // Added "articles" to the sections array
+      const sections = ["home", "about", "experience", "projects", "education", "articles", "contact"];
       const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
       
       if (isAtBottom) {
@@ -54,7 +55,8 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [mobileMenuOpen]);
 
-  const navItems = ["Home", "About", "Experience", "Projects", "Education", "Contact"];
+  // Added "Articles" to the navItems array
+  const navItems = ["Home", "About", "Experience", "Projects", "Education", "Articles", "Contact"];
 
   return (
     <>

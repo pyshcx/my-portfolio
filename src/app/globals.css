@@ -21,35 +21,35 @@ body {
   .section-gradient {
     @apply bg-gradient-to-br from-[#1E3D58] via-[#3A6EA5] to-[#00BFA6];
   }
-  
+
   .section-title {
     @apply text-4xl font-bold text-[#333333] text-center mb-12;
   }
-  
+
   .section-text {
     @apply text-lg text-[#333333] leading-relaxed;
   }
-  
+
   .card {
     @apply bg-white bg-opacity-10 backdrop-blur-md p-6 rounded-xl shadow-xl border border-[#00BFA6]/20;
   }
-  
+
   .btn-primary {
     @apply bg-[#00BFA6] text-white py-2 px-4 rounded-lg hover:bg-[#82E9F5] hover:text-[#333333] transition-all duration-300;
   }
-  
+
   .btn-rounded {
     @apply bg-[#00BFA6] text-white py-3 px-8 rounded-full hover:bg-[#82E9F5] hover:text-[#333333] transition-all duration-300;
   }
-  
+
   .icon-teal {
     @apply text-[#00BFA6];
   }
-  
+
   .text-dark {
     @apply text-[#333333];
   }
-  
+
   .text-light {
     @apply text-[#F5F5F5];
   }
@@ -58,7 +58,7 @@ body {
 /* Animations */
 @keyframes float {
   0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+  50% { transform: translateY(-10px); }
   100% { transform: translateY(0px); }
 }
 
@@ -74,7 +74,7 @@ body {
   border-radius: 50%;
   background-color: #00BFA6;
   opacity: 1;
-  animation: bouncing-loader 0.6s infinite alternate;
+  animation: bouncing-loader 0.6s infinite alternate ease-in-out;
 }
 
 @keyframes bouncing-loader {
@@ -94,33 +94,154 @@ body {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-  body{
+  body {
     font-size: 14px;
-  }
-  .card{
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-  .section-title {
-    @apply text-3xl;
-    font-size: 24px;
+    scroll-behavior: smooth;
   }
   
-  .section-text {
-    @apply text-base;
+  .card {
+    width: auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: .75rem;
+    font-size: .875rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
   }
 }
+
+/* Section Divider */
 .section-divider {
   height: 1px;
   background: linear-gradient(to right, transparent, rgba(0, 191, 166, 0.3), transparent);
-  margin: 0 auto;
+  margin: 2rem auto;
   width: 80%;
   max-width: 800px;
 }
 
+/* Glass Card Effect */
 .glass-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* MediumSlider Styles */
+.mySwiper {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 400px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-slide-active {
+  transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: var(--color-teal);
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--color-teal);
+  transform: scale(0.7);
+}
+
+/* Article Card Styles */
+.article-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.article-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  color: white;
+}
+
+.article-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.article-card p {
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.article-card a {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--color-teal);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+}
+
+.article-card a:hover {
+  background-color: var(--color-light-teal);
+  color: var(--color-dark);
+}
+
+/* Responsive adjustments for MediumSlider */
+@media (max-width: 480px) {
+  .mySwiper {
+    max-width: 300px;
+  }
+
+  .swiper-slide {
+    width: 250px;
+    height: 350px;
+  }
+
+  .article-card h3 {
+    font-size: 1rem;
+  }
+
+  .article-card p {
+    font-size: 0.7rem;
+  }
+
+  .article-card a {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
 }
