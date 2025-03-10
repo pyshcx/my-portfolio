@@ -11,20 +11,20 @@ const MediumSlider = () => {
   const articles = [
     { 
       image: '/PHOTO-2025-03-10-19-14-06.jpg',
-      title: 'AI in Modern Robotics',
-      link: 'https://medium.com/article1',
+      title: 'Ultraviolette Automotive',
+      link: 'https://medium.com/@pranayshah19/ultraviolette-automotive-ferrari-backed-indian-ev-innovator-brings-autonomous-tech-to-two-wheelers-2c09e2437ac7',
       date: 'Mar 15, 2024'
     },
     { 
       image: '/PHOTO-2025-03-10-19-24-14.jpg',
-      title: 'Machine Learning Basics',
-      link: 'https://medium.com/article2',
+      title: 'Autonomous Speed Record',
+      link: 'https://medium.com/@pranayshah19/autonomous-speed-record-shattered-maserati-mc20-hits-197-7-mph-with-no-human-behind-the-wheel-9a0fe1cf8058',
       date: 'Feb 28, 2024'
     },
     { 
       image: '/PHOTO-2025-03-10-19-24-15.jpg',
-      title: 'Advanced AI Techniques',
-      link: 'https://medium.com/article3',
+      title: 'BYD’s “God’s Eye”',
+      link: 'https://medium.com/@pranayshah19/byds-god-s-eye-redefining-autonomous-driving-accessibility-and-industry-competition-01577d90b787',
       date: 'Jan 12, 2024'
     }
   ];
