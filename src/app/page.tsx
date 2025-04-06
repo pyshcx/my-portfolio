@@ -15,6 +15,7 @@ import { LoadingProvider } from './components/LoadingContext';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import MediumSlider from './components/MediumSlider';
+import ResearchSection from './components/ResearchSection';
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,20 +35,34 @@ export default function Page() {
         {!isLoading && (
           <>
             <Navbar />
-            <div className="continuous-content space-y-8"> {/* Reduced spacing */}
+            <div className="continuous-content space-y-8">
               <Home />
               <About />
               <Experiences />
               <Projects />
               <Education />
-              <section id="articles" className="py-8 px-4 md:px-8"> {/* Reduced padding */}
-                <div className="max-w-md mx-auto">
-                  <h2 className="text-3xl font-bold text-[#333333] text-center mb-6"> {/* Reduced font size and margin */}
-                    My Articles
-                  </h2>
-                  <MediumSlider />
+
+              {/* Articles and Research Section */}
+              <section id="articles-research" className="py-16 px-4 md:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-7xl mx-auto">
+                  {/* Articles Section */}
+                  <div className="flex flex-col items-center">
+                    <h2 className="text-3xl font-bold text-[#333333] text-center mb-6">My Articles</h2>
+                    <div className="w-full max-w-md mx-auto">
+                      <MediumSlider />
+                    </div>
+                  </div>
+
+                  {/* Research Section */}
+                  <div className="flex flex-col items-center">
+                    <h2 className="text-3xl font-bold text-[#333333] text-center mb-6">My Research</h2>
+                    <div className="w-full max-w-md mx-auto">
+                      <ResearchSection />
+                    </div>
+                  </div>
                 </div>
               </section>
+
               <Contact />
             </div>
             <Footer />

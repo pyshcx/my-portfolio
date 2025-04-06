@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { HiDocumentText } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -9,38 +9,87 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const scrollTimeoutRef = useRef(null);
+
+  // Navigation items with their corresponding section IDs
+  const navItems = [
+    { name: "Home", id: "home" },
+    { name: "About", id: "about" },
+    { name: "Experience", id: "experience" },
+    { name: "Projects", id: "projects" },
+    { name: "Education", id: "education" },
+    { name: "Articles & Research", id: "articles-research" },
+    { name: "Contact", id: "contact" }
+  ];
 
   // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
+      // Check if scrolled for navbar background
       if (window.scrollY > 20) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
 
-      // Added "articles" to the sections array
-      const sections = ["home", "about", "experience", "projects", "education", "articles", "contact"];
-      const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
-      
-      if (isAtBottom) {
-        setActiveSection("contact");
-      } else {
-        for (const section of sections) {
-          const element = document.getElementById(section);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            if (rect.top <= 100 && rect.bottom >= 100) {
-              setActiveSection(section);
-              break;
-            }
-          }
-        }
+      // Use debouncing to avoid excessive calculations
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
       }
+
+      scrollTimeoutRef.current = setTimeout(() => {
+        // Get all section elements
+        const sectionElements = navItems.map(item => ({
+          id: item.id,
+          element: document.getElementById(item.id)
+        })).filter(item => item.element);
+
+        // Calculate which section is most visible
+        const viewportHeight = window.innerHeight;
+        let maxVisibleSection = null;
+        let maxVisibleRatio = 0;
+
+        sectionElements.forEach(({ id, element }) => {
+          const rect = element.getBoundingClientRect();
+          
+          // Calculate how much of the element is visible
+          const visibleTop = Math.max(0, rect.top);
+          const visibleBottom = Math.min(viewportHeight, rect.bottom);
+          const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+          
+          // Calculate ratio of visible part to viewport
+          const visibleRatio = visibleHeight / viewportHeight;
+          
+          // Apply special weighting for articles-research section
+          const weight = id === "articles-research" ? 1.2 : 1;
+          const weightedRatio = visibleRatio * weight;
+          
+          if (weightedRatio > maxVisibleRatio) {
+            maxVisibleRatio = weightedRatio;
+            maxVisibleSection = id;
+          }
+        });
+
+        // Special case for bottom of page
+        const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+        if (isAtBottom) {
+          setActiveSection("contact");
+        } else if (maxVisibleSection) {
+          setActiveSection(maxVisibleSection);
+        }
+      }, 100); // 100ms debounce
     };
 
+    // Run once on mount to set initial active section
+    handleScroll();
+    
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Close mobile menu when window is resized to desktop size
@@ -55,8 +104,11 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [mobileMenuOpen]);
 
-  // Added "Articles" to the navItems array
-  const navItems = ["Home", "About", "Experience", "Projects", "Education", "Articles", "Contact"];
+  // Function to handle navigation item clicks
+  const handleNavClick = (id) => {
+    setActiveSection(id);
+    setMobileMenuOpen(false);
+  };
 
   return (
     <>
@@ -75,21 +127,22 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
             className="text-xl md:text-2xl font-bold text-[#00BFA6] transition-all duration-300"
           >
-            <a href="#home">Pranay Shah</a>
+            <a href="#home" onClick={() => handleNavClick("home")}>Pranay Shah</a>
           </motion.h1>
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex space-x-8">
             {navItems.map((item) => (
-              <motion.li key={item} className="relative" whileHover={{ y: -2 }}>
+              <motion.li key={item.name} className="relative" whileHover={{ y: -2 }}>
                 <a 
-                  href={`#${item.toLowerCase()}`} 
+                  href={`#${item.id}`} 
                   className={`transition-all duration-300 hover:text-[#00BFA6] ${
-                    activeSection === item.toLowerCase() ? "text-[#00BFA6]" : "text-[#F5F5F5]"
+                    activeSection === item.id ? "text-[#00BFA6]" : "text-[#F5F5F5]"
                   }`}
+                  onClick={() => handleNavClick(item.id)}
                 >
-                  {item}
-                  {activeSection === item.toLowerCase() && (
+                  {item.name}
+                  {activeSection === item.id && (
                     <motion.span 
                       layoutId="activeSection"
                       className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#00BFA6] rounded-full"
@@ -139,18 +192,18 @@ const Navbar = () => {
               <ul className="flex flex-col items-center py-4">
                 {navItems.map((item) => (
                   <motion.li 
-                    key={item} 
+                    key={item.name} 
                     className="py-3 w-full text-center"
                     whileHover={{ backgroundColor: "rgba(0, 191, 166, 0.1)" }}
                   >
                     <a 
-                      href={`#${item.toLowerCase()}`} 
+                      href={`#${item.id}`} 
                       className={`block transition-all duration-300 hover:text-[#00BFA6] ${
-                        activeSection === item.toLowerCase() ? "text-[#00BFA6]" : "text-[#F5F5F5]"
+                        activeSection === item.id ? "text-[#00BFA6]" : "text-[#F5F5F5]"
                       }`}
-                      onClick={() => setMobileMenuOpen(false)}
+                      onClick={() => handleNavClick(item.id)}
                     >
-                      {item}
+                      {item.name}
                     </a>
                   </motion.li>
                 ))}

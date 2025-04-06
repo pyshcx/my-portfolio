@@ -21,7 +21,6 @@ const Experiences = () => {
         "Implemented YOLO for real-time object detection, improving obstacle avoidance.",
       ],
     },
-
     {
       title: "AI/ML Intern - MedAI Technologies",
       date: "Sep 2024 - Dec 2024",
@@ -110,7 +109,7 @@ const Experiences = () => {
         transition={{ duration: 0.8 }}
         viewport={{ once: true, margin: "-100px" }}
       >
-        <h2 className="text-4xl font-bold text-[#333333] text-center mb-12">Experience</h2>
+        <h2 className="text-4xl font-bold text-[#333333] text-center mb-8">Experience</h2>
         
         {/* Mobile Swipeable Cards */}
         {isMobile && (
@@ -128,7 +127,7 @@ const Experiences = () => {
                 {experiences.map((experience, index) => (
                   <div key={index} className="w-full flex-shrink-0">
                     <motion.div
-                      className="bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-[400px] flex flex-col"
+                      className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-[350px] flex flex-col"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3 }}
@@ -137,14 +136,14 @@ const Experiences = () => {
                         <div className="bg-[#00BFA6] bg-opacity-10 p-2 rounded-full mr-3">
                           <FaBriefcase className="text-[#00BFA6] text-xl" />
                         </div>
-                        <h3 className="text-xl font-semibold text-[#333333]">
+                        <h3 className="text-lg font-semibold text-[#333333]">
                           {experience.title}
                         </h3>
                       </div>
                       <p className="text-sm text-[#333333] mb-4 italic">{experience.date}</p>
                       <ul className="list-disc ml-5 space-y-2 text-[#333333] flex-grow">
                         {experience.points.map((point, i) => (
-                          <li key={i} className="text-base">{point}</li>
+                          <li key={i} className="text-sm">{point}</li>
                         ))}
                       </ul>
                     </motion.div>
@@ -154,7 +153,7 @@ const Experiences = () => {
             </div>
             
             {/* Dots for navigation */}
-            <div className="flex justify-center mt-6 space-x-2">
+            <div className="flex justify-center mt-4 space-x-2">
               {experiences.map((_, index) => (
                 <button
                   key={index}
@@ -171,15 +170,15 @@ const Experiences = () => {
         
         {/* Desktop Layout */}
         {!isMobile && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {experiences.map((experience, index) => (
               <motion.div
                 key={index}
-                className="bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-full flex flex-col"
+                className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-full flex flex-col"
                 whileHover={{ 
                   scale: 1.03, 
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  borderColor: "rgba(0, 191, 166, 0.3)"
+                  backgroundColor: "rgba(255,255,255,0.15)",
+                  borderColor: "rgba(0,191,166,0.3)"
                 }}
                 transition={{ duration: 0.3 }}
               >
@@ -188,7 +187,7 @@ const Experiences = () => {
                     <FaBriefcase className="text-[#00BFA6] text-xl" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-[#333333]">
+                    <h3 className="text-lg font-semibold text-[#333333]">
                       {experience.title}
                     </h3>
                     <p className="text-sm text-[#333333] italic">{experience.date}</p>
@@ -196,7 +195,7 @@ const Experiences = () => {
                 </div>
                 <ul className="list-disc ml-5 space-y-2 text-[#333333] flex-grow">
                   {experience.points.map((point, i) => (
-                    <li key={i} className="text-base">{point}</li>
+                    <li key={i} className="text-sm">{point}</li>
                   ))}
                 </ul>
               </motion.div>
