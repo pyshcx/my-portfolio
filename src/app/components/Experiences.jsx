@@ -21,14 +21,7 @@ const Experiences = () => {
         "Implemented YOLO for real-time object detection, improving obstacle avoidance.",
       ],
     },
-    {
-      title: "Researcher - ARC (Autonomous Research Center), VIT",
-      date: "Jan 2025 - Present",
-      points: [
-        "Working on a self-driving car project, focusing on autonomous navigation.",
-        "Currently developing applications using ROS2 for real-time control.",
-      ],
-    },
+
     {
       title: "AI/ML Intern - MedAI Technologies",
       date: "Sep 2024 - Dec 2024",
