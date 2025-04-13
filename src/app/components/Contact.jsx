@@ -53,7 +53,7 @@ const Contact = () => (
 
         {/* Additional text */}
         <p className="mt-10 text-[#333333] italic font-light">
-          "The best way to predict the future is to create it." - Alan Kay
+          "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle." - Steve Jobs
         </p>
       </div>
       
