@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { HiDocumentText } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -11,6 +11,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const scrollTimeoutRef = useRef(null);
+  const lastScrollY = useRef(0);
 
   // Navigation items with their corresponding section IDs
   const navItems = [
@@ -28,31 +29,33 @@ const Navbar = () => {
     setIsMounted(true);
   }, []);
 
-  // Handle scroll events with better mobile optimization
-  useEffect(() => {
-    if (!isMounted) return;
+  // Optimized scroll handler with throttling for better mobile performance
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+    
+    // Update scrolled state
+    setScrolled(currentScrollY > 20);
+    
+    // Throttle section detection for better performance
+    if (Math.abs(currentScrollY - lastScrollY.current) < 10) return;
+    lastScrollY.current = currentScrollY;
 
-    const handleScroll = () => {
-      // Check if scrolled for navbar background
-      const scrollY = window.scrollY || window.pageYOffset;
-      setScrolled(scrollY > 20);
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
 
-      // Use debouncing to avoid excessive calculations
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-
-      scrollTimeoutRef.current = setTimeout(() => {
-        // Get all section elements
-        const sectionElements = navItems.map(item => ({
-          id: item.id,
-          element: document.getElementById(item.id)
-        })).filter(item => item.element);
+    scrollTimeoutRef.current = setTimeout(() => {
+      try {
+        // Get all section elements with error handling
+        const sectionElements = navItems.map(item => {
+          const element = document.getElementById(item.id);
+          return element ? { id: item.id, element } : null;
+        }).filter(Boolean);
 
         if (sectionElements.length === 0) return;
 
         // Calculate which section is most visible
-        const viewportHeight = window.innerHeight;
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
         let maxVisibleSection = null;
         let maxVisibleRatio = 0;
 
@@ -71,42 +74,54 @@ const Navbar = () => {
           const weight = id === "articles-research" ? 1.2 : 1;
           const weightedRatio = visibleRatio * weight;
           
-          if (weightedRatio > maxVisibleRatio) {
+          if (weightedRatio > maxVisibleRatio && visibleRatio > 0.3) {
             maxVisibleRatio = weightedRatio;
             maxVisibleSection = id;
           }
         });
 
-        // Special case for bottom of page
+        // Special case for bottom of page with better mobile detection
         const documentHeight = Math.max(
-          document.body.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.clientHeight,
-          document.documentElement.scrollHeight,
-          document.documentElement.offsetHeight
+          document.body.scrollHeight || 0,
+          document.body.offsetHeight || 0,
+          document.documentElement.clientHeight || 0,
+          document.documentElement.scrollHeight || 0,
+          document.documentElement.offsetHeight || 0
         );
         
-        const isAtBottom = window.innerHeight + scrollY >= documentHeight - 100;
+        const isAtBottom = (viewportHeight + currentScrollY) >= (documentHeight - 50);
         
         if (isAtBottom) {
           setActiveSection("contact");
         } else if (maxVisibleSection) {
           setActiveSection(maxVisibleSection);
         }
-      }, 100); // 100ms debounce
-    };
+      } catch (error) {
+        console.warn("Error in scroll handler:", error);
+      }
+    }, 150); // Increased debounce for better mobile performance
+  }, []);
+
+  // Handle scroll events with better mobile optimization
+  useEffect(() => {
+    if (!isMounted) return;
 
     // Run once on mount to set initial active section
     handleScroll();
     
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Use passive listeners for better performance
+    const options = { passive: true };
+    window.addEventListener("scroll", handleScroll, options);
+    window.addEventListener("touchmove", handleScroll, options);
+    
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("touchmove", handleScroll);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, [isMounted]);
+  }, [isMounted, handleScroll]);
 
   // Close mobile menu when window is resized to desktop size
   useEffect(() => {
@@ -118,45 +133,91 @@ const Navbar = () => {
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
     return () => window.removeEventListener("resize", handleResize);
   }, [mobileMenuOpen, isMounted]);
 
-  // Prevent body scroll when mobile menu is open
+  // Prevent body scroll when mobile menu is open with better mobile support
   useEffect(() => {
+    if (!isMounted) return;
+
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      // Store current scroll position
+      const scrollY = window.scrollY;
+      
+      // Prevent scrolling
       document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.overflow = 'hidden';
       document.body.style.width = '100%';
+      
+      // Prevent touch scrolling on iOS
+      document.addEventListener('touchmove', preventScroll, { passive: false });
     } else {
-      document.body.style.overflow = '';
+      // Restore scroll position
+      const scrollY = document.body.style.top;
       document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
       document.body.style.width = '';
+      
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+      
+      document.removeEventListener('touchmove', preventScroll);
     }
 
     return () => {
-      document.body.style.overflow = '';
+      // Cleanup on unmount
       document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
       document.body.style.width = '';
+      document.removeEventListener('touchmove', preventScroll);
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, isMounted]);
+
+  // Prevent scroll helper function
+  const preventScroll = (e) => {
+    e.preventDefault();
+  };
 
   // Function to handle navigation item clicks with smooth scrolling
-  const handleNavClick = (id, e) => {
+  const handleNavClick = useCallback((id, e) => {
     e?.preventDefault();
     setActiveSection(id);
     setMobileMenuOpen(false);
     
-    // Smooth scroll to section
-    const element = document.getElementById(id);
-    if (element) {
-      const offsetTop = element.offsetTop - 80; // Account for navbar height
-      window.scrollTo({
-        top: offsetTop,
-        behavior: 'smooth'
-      });
-    }
-  };
+    // Small delay to ensure menu closes before scrolling
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        // Calculate offset based on device type
+        const isMobile = window.innerWidth < 768;
+        const offset = isMobile ? 70 : 80; // Smaller offset for mobile
+        
+        const elementPosition = element.offsetTop - offset;
+        
+        // Use different scroll methods for better mobile support
+        if ('scrollBehavior' in document.documentElement.style) {
+          window.scrollTo({
+            top: elementPosition,
+            behavior: 'smooth'
+          });
+        } else {
+          // Fallback for older browsers/devices
+          window.scrollTo(0, elementPosition);
+        }
+      }
+    }, mobileMenuOpen ? 300 : 0);
+  }, [mobileMenuOpen]);
 
   // Don't render until mounted to avoid hydration issues
   if (!isMounted) {
@@ -174,31 +235,35 @@ const Navbar = () => {
             ? "bg-[rgba(30,61,88,0.95)] backdrop-blur-md shadow-lg py-2" 
             : "bg-[rgba(30,61,88,0.7)] backdrop-blur-sm py-3 md:py-4"
         }`}
+        style={{ 
+          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)',
+          backdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)'
+        }}
       >
         <div className="container mx-auto flex justify-between items-center px-4 md:px-6">
           <motion.h1 
             whileHover={{ scale: 1.05 }}
             className="text-lg sm:text-xl md:text-2xl font-bold text-[#00BFA6] transition-all duration-300 z-50"
           >
-            <a 
-              href="#home" 
+            <button 
               onClick={(e) => handleNavClick("home", e)}
-              className="block"
+              className="block text-left"
+              type="button"
             >
               Pranay Shah
-            </a>
+            </button>
           </motion.h1>
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex space-x-6 lg:space-x-8">
             {navItems.map((item) => (
               <motion.li key={item.name} className="relative" whileHover={{ y: -2 }}>
-                <a 
-                  href={`#${item.id}`} 
+                <button 
                   className={`text-sm lg:text-base transition-all duration-300 hover:text-[#00BFA6] ${
                     activeSection === item.id ? "text-[#00BFA6]" : "text-[#F5F5F5]"
                   }`}
                   onClick={(e) => handleNavClick(item.id, e)}
+                  type="button"
                 >
                   {item.name}
                   {activeSection === item.id && (
@@ -207,7 +272,7 @@ const Navbar = () => {
                       className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#00BFA6] rounded-full"
                     />
                   )}
-                </a>
+                </button>
               </motion.li>
             ))}
           </ul>
@@ -229,12 +294,27 @@ const Navbar = () => {
             {/* Mobile Menu Button */}
             <motion.button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-[#F5F5F5] bg-[rgba(0,191,166,0.2)] p-2.5 rounded-lg backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#00BFA6] z-50"
+              className="md:hidden text-[#F5F5F5] bg-[rgba(0,191,166,0.2)] p-2.5 rounded-lg backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#00BFA6] z-50 relative"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              type="button"
+              style={{ 
+                WebkitTapHighlightColor: 'transparent',
+                touchAction: 'manipulation'
+              }}
             >
-              {mobileMenuOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={mobileMenuOpen ? 'close' : 'open'}
+                  initial={{ rotate: 0, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {mobileMenuOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
+                </motion.div>
+              </AnimatePresence>
             </motion.button>
           </div>
         </div>
@@ -248,6 +328,10 @@ const Navbar = () => {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="md:hidden bg-[rgba(30,61,88,0.98)] backdrop-blur-md border-t border-[#00BFA6]/20 absolute top-full left-0 w-full"
+              style={{ 
+                WebkitBackdropFilter: 'blur(12px)',
+                backdropFilter: 'blur(12px)'
+              }}
             >
               <ul className="flex flex-col py-4">
                 {navItems.map((item, index) => (
@@ -259,15 +343,19 @@ const Navbar = () => {
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ backgroundColor: "rgba(0, 191, 166, 0.1)" }}
                   >
-                    <a 
-                      href={`#${item.id}`} 
-                      className={`block text-base transition-all duration-300 hover:text-[#00BFA6] ${
+                    <button 
+                      className={`block w-full text-left text-base transition-all duration-300 hover:text-[#00BFA6] ${
                         activeSection === item.id ? "text-[#00BFA6] font-semibold" : "text-[#F5F5F5]"
                       }`}
                       onClick={(e) => handleNavClick(item.id, e)}
+                      type="button"
+                      style={{ 
+                        WebkitTapHighlightColor: 'transparent',
+                        touchAction: 'manipulation'
+                      }}
                     >
                       {item.name}
-                    </a>
+                    </button>
                   </motion.li>
                 ))}
                 <motion.li 
@@ -284,6 +372,10 @@ const Navbar = () => {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-[#00BFA6] text-white py-3 px-4 rounded-lg hover:bg-[#82E9F5] hover:text-[#333333] transition-all duration-300 text-base font-medium"
                     onClick={() => setMobileMenuOpen(false)}
+                    style={{ 
+                      WebkitTapHighlightColor: 'transparent',
+                      touchAction: 'manipulation'
+                    }}
                   >
                     <HiDocumentText className="mr-2 text-xl" /> 
                     Resume
@@ -305,6 +397,10 @@ const Navbar = () => {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-black/60 z-40 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
+            style={{ 
+              WebkitTapHighlightColor: 'transparent',
+              touchAction: 'manipulation'
+            }}
           />
         )}
       </AnimatePresence>
