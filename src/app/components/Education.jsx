@@ -29,7 +29,7 @@ const Education = () => {
     {
       degree: "Higher Secondary Education",
       institution: "DAV International School",
-      duration: "2020 - 2022",
+      duration: "2008 - 2022",
       description: "Focused on Physics, Chemistry, Mathematics, and Computer Science.",
       achievements: ["Class 12th: 88%", "Class 10th: 94%"],
     },
