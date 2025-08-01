@@ -55,7 +55,7 @@ const statusColors = {
 };
 
 const ResearchSection = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -106,7 +106,7 @@ const ResearchSection = () => {
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 className={`group relative overflow-hidden backdrop-blur-sm transition-all duration-300 p-4 rounded-xl border shadow-sm hover:shadow-md cursor-default ${
-                  categoryColors[project.category] || "from-white/30 to-white/40 border-[#00BFA6]/40"
+                  categoryColors[project.category as keyof typeof categoryColors] || "from-white/30 to-white/40 border-[#00BFA6]/40"
                 }`}
               >
                 {/* Left accent bar */}
@@ -153,7 +153,7 @@ const ResearchSection = () => {
                         <span className="text-xs font-medium text-[#00474F]/70 bg-white/40 px-2 py-0.5 rounded-full">
                           {project.category}
                         </span>
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${statusColors[project.status]}`}>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${statusColors[project.status as keyof typeof statusColors]}`}>
                           {project.status}
                         </span>
                       </div>
