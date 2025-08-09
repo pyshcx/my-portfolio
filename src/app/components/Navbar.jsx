@@ -282,7 +282,7 @@ const Navbar = () => {
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="https://drive.google.com/file/d/1Co3ZfjDaFMoMStNIHVbYA8njctI4YOCa/view?usp=drive_link"
+              href="https://drive.google.com/file/d/1sUFJyyfiK8RlAGQ9j4hcf26D_BbyunkB/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden md:flex items-center bg-[#00BFA6] text-white py-2 px-3 lg:px-4 rounded-lg hover:bg-[#82E9F5] hover:text-[#333333] transition-all duration-300 text-sm lg:text-base"
