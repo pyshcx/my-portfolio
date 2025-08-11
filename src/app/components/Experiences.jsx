@@ -26,6 +26,14 @@ const experiences = [
     ]
   },
   {
+    title: "Tech Intern · Alfaleus Technology Private Limited",
+    date: "Jun 2025",
+    points: [
+      "Selected among top 10% of over 1200 applicants for intensive virtual 7-day bootcamp.",
+    "Successfully completed assignments in ID_Mech and Research domains with exceptional technical skills."
+    ]
+  },
+  {
     title: "Research Intern · Ahmedabad University",
     date: "May 2025 – Jul 2025",
     points: [

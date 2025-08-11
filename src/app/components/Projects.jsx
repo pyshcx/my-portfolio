@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { FaGithub, FaCode, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaGithub, FaCode, FaChevronLeft, FaChevronRight, FaExternalLinkAlt } from "react-icons/fa";
 import SectionWrapper from "./SectionWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -29,7 +29,8 @@ const projects = [
     title: "AI-Powered Car-Rental Feedback Analysis",
     description:
       "NLP pipeline that surfaces actionable insights from customer reviews.",
-    githubLink: "https://github.com/pyshcx/car-rental-feedback-analyzer"
+    githubLink: "https://github.com/pyshcx/car-rental-feedback-analyzer",
+    hostedLink: "https://car-rental-feedback-analyzer.streamlit.app/"
   }
 ];
 
@@ -82,7 +83,7 @@ const Projects = () => {
     if (isPaused || !isMounted) return;
     const id = setInterval(() => {
       setActiveIndex((prev) => (prev >= max ? 0 : prev + 1));
-    }, 5000); // Increased interval for better UX
+    }, 5000);
     return () => clearInterval(id);
   }, [isPaused, max, isMounted]);
 
@@ -138,7 +139,6 @@ const Projects = () => {
     const deltaX = Math.abs(touch.clientX - touchStartX.current);
     const deltaY = Math.abs(touch.clientY - touchStartY.current);
     
-    // Only prevent default if horizontal swipe is more significant than vertical
     if (deltaX > deltaY && deltaX > 10) {
       e.preventDefault();
       isDragging.current = true;
@@ -211,10 +211,8 @@ const Projects = () => {
   /* ———————————————————— 8. Visible projects calculation ———————————————————— */
   const visibleProjects = useMemo(() => {
     if (isMobile) {
-      // On mobile, show only the active slide
       return [projects[activeIndex]];
     } else if (isTablet) {
-      // On tablet, show 2 slides
       const visible = [];
       for (let i = 0; i < 2; i++) {
         const index = (activeIndex + i) % slides;
@@ -222,7 +220,6 @@ const Projects = () => {
       }
       return visible;
     } else {
-      // On desktop, show 3 slides
       const visible = [];
       for (let i = 0; i < 3; i++) {
         const index = (activeIndex + i) % slides;
@@ -256,7 +253,6 @@ const Projects = () => {
           Projects
         </h2>
 
-        {/* ─────────────────────────── Carousel container ─────────────────────────── */}
         <div className="relative w-full max-w-7xl mx-auto px-4">
           {/* Navigation arrows - Desktop and Tablet only */}
           {!isMobile && (
@@ -343,13 +339,14 @@ const Projects = () => {
                       transition={{ duration: 0.3, delay: i * 0.1 }}
                     >
                       <div
-                        className="bg-white bg-opacity-5 backdrop-blur-sm p-4 md:p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-full flex flex-col transition-all duration-300 hover:bg-opacity-10 hover:border-[#00BFA6]/20 hover:shadow-xl min-h-[280px] md:min-h-[320px]"
+                        className="bg-white bg-opacity-5 backdrop-blur-sm p-4 md:p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-full flex flex-col transition-all duration-300 hover:bg-opacity-10 hover:border-[#00BFA6]/20 hover:shadow-xl"
                         style={{ 
                           WebkitBackdropFilter: 'blur(8px)',
-                          backdropFilter: 'blur(8px)'
+                          backdropFilter: 'blur(8px)',
+                          minHeight: '400px'
                         }}
                       >
-                        <div className="flex-grow">
+                        <div className="flex-grow flex flex-col">
                           <div className="flex items-start mb-4">
                             <div className="bg-[#00BFA6] bg-opacity-10 p-2 md:p-3 rounded-full mr-3 flex-shrink-0">
                               <FaCode className="text-[#00BFA6] text-lg md:text-xl" />
@@ -361,26 +358,71 @@ const Projects = () => {
                             </div>
                           </div>
                           
-                          <p className="text-[#333] mb-6 text-sm md:text-base leading-relaxed">
-                            {project.description}
-                          </p>
+                          <div className="flex-grow">
+                            <p className="text-[#333] text-sm md:text-base leading-relaxed mb-4">
+                              {project.description}
+                            </p>
+                          </div>
                         </div>
 
-                        <motion.a
-                          href={project.githubLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="bg-[#00BFA6] text-white py-2.5 md:py-3 px-4 md:px-5 rounded-lg hover:bg-[#82E9F5] hover:text-[#333] transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium mt-auto"
-                          style={{ 
-                            WebkitTapHighlightColor: 'transparent',
-                            touchAction: 'manipulation'
-                          }}
-                        >
-                          <FaGithub className="mr-2 text-base md:text-lg" />
-                          View on GitHub
-                        </motion.a>
+                        {/* Button section with inversed colors but same positions */}
+                        <div className="mt-auto pt-4">
+                          {project.hostedLink ? (
+                            // Car Rental project gets both buttons with INVERSED colors but same positions
+                            <div className="flex flex-col gap-3">
+                              {/* Live Demo button - now SECONDARY style (outlined) but still first */}
+                              <motion.a
+                                href={project.hostedLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="w-full bg-transparent border-2 border-[#00BFA6]/40 text-[#333] py-3 px-5 rounded-lg hover:bg-[#00BFA6]/5 hover:border-[#00BFA6]/60 transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium"
+                                style={{ 
+                                  WebkitTapHighlightColor: 'transparent',
+                                  touchAction: 'manipulation'
+                                }}
+                              >
+                                <FaExternalLinkAlt className="mr-2 text-sm" />
+                                Live Demo
+                              </motion.a>
+                              
+                              {/* GitHub button - now PRIMARY style (solid teal) but still second */}
+                              <motion.a
+                                href={project.githubLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="w-full bg-[#00BFA6] text-white py-3 px-5 rounded-lg hover:bg-[#82E9F5] hover:text-[#333] transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium shadow-md hover:shadow-lg"
+                                style={{ 
+                                  WebkitTapHighlightColor: 'transparent',
+                                  touchAction: 'manipulation'
+                                }}
+                              >
+                                <FaGithub className="mr-2 text-base" />
+                                View on GitHub
+                              </motion.a>
+                            </div>
+                          ) : (
+                            // All other projects get only GitHub button (unchanged)
+                            <motion.a
+                              href={project.githubLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              className="w-full bg-[#00BFA6] text-white py-3 px-5 rounded-lg hover:bg-[#82E9F5] hover:text-[#333] transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium shadow-md hover:shadow-lg"
+                              style={{ 
+                                WebkitTapHighlightColor: 'transparent',
+                                touchAction: 'manipulation'
+                              }}
+                            >
+                              <FaGithub className="mr-2 text-base" />
+                              View on GitHub
+                            </motion.a>
+                          )}
+                        </div>
                       </div>
                     </motion.div>
                   ))}
