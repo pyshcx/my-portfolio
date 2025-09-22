@@ -7,6 +7,7 @@ import About from './components/About';
 import Experiences from './components/Experiences';
 import Projects from './components/Projects';
 import Education from './components/Education';
+import Achievements from './components/Achievements';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -41,6 +42,7 @@ export default function Page() {
               <Experiences />
               <Projects />
               <Education />
+              <Achievements />
 
               {/* Articles and Research Section */}
               <section id="articles-research" className="py-16 px-4 md:px-8">
