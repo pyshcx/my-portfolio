@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Award, Trophy, Star, Medal } from 'lucide-react';
+import { Award, Trophy, Star, Medal, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
+import SectionWrapper from './SectionWrapper';
 
 const achievements = [
   {
@@ -11,9 +12,9 @@ const achievements = [
     category: "Competition",
     description: "Selected among Top 35 global teams at Formula Student Germany 2024 Autonomous Challenge. Led the Path Planning team for Team Ojas Racing, developing autonomous navigation algorithms and YOLO-based object detection systems.",
     date: "2024",
-    image: "/images/achievements/formula-student-2024.jpg", // Add your image path
+    image: "/images/achievements/formula-student-2024.jpg",
     icon: Trophy,
-    color: "from-yellow-400 to-orange-500",
+    color: "from-[#1E3D58] to-[#3A6EA5]",
     highlights: ["Top 35 globally", "Autonomous Challenge", "Team Leadership"]
   },
   {
@@ -22,9 +23,9 @@ const achievements = [
     category: "Certification",
     description: "Completed comprehensive Machine Learning Specialization from DeepLearning.AI & Coursera, mastering supervised learning, unsupervised learning, and advanced ML techniques including neural networks and deep learning.",
     date: "2024",
-    image: "/images/achievements/ml-certification.jpg", // Add your image path
+    image: "/images/achievements/ml-certification.jpg",
     icon: Award,
-    color: "from-blue-400 to-purple-500",
+    color: "from-[#3A6EA5] to-[#00BFA6]",
     highlights: ["DeepLearning.AI", "Coursera", "Advanced ML Techniques"]
   },
   {
@@ -33,9 +34,9 @@ const achievements = [
     category: "Hackathon",
     description: "Reached the finals of Odoo Hackathon 2024, showcasing innovative solutions and technical excellence in enterprise software development and business automation.",
     date: "2024",
-    image: "/images/achievements/odoo-hackathon.jpg", // Add your image path
+    image: "/images/achievements/odoo-hackathon.jpg",
     icon: Star,
-    color: "from-green-400 to-teal-500",
+    color: "from-[#00BFA6] to-[#82E9F5]",
     highlights: ["Finalist Position", "Enterprise Solutions", "Innovation"]
   },
   {
@@ -44,10 +45,21 @@ const achievements = [
     category: "Internship",
     description: "Achieved Top 10% recognition at Alfaleus Tech Internship Bootcamp 2025, demonstrating exceptional performance in advanced technology projects and collaborative development.",
     date: "2025",
-    image: "/images/achievements/alfaleus-recognition.jpg", // Add your image path
+    image: "/images/achievements/alfaleus-recognition.jpg",
     icon: Medal,
-    color: "from-purple-400 to-pink-500",
+    color: "from-[#1E3D58] via-[#3A6EA5] to-[#00BFA6]",
     highlights: ["Top 10%", "Bootcamp Excellence", "Advanced Tech"]
+  },
+  {
+    id: 5,
+    title: "Generative AI using IBM Watsonx",
+    category: "Certification",
+    description: "Completed advanced certification in Generative AI using IBM Watsonx platform, gaining expertise in large language models, prompt engineering, and enterprise AI solutions.",
+    date: "2025",
+    image: "/images/achievements/ibm-watsonx.jpg",
+    icon: Award,
+    color: "from-[#3A6EA5] to-[#00BFA6]",
+    highlights: ["IBM Career Education", "Generative AI", "Enterprise Solutions"]
   }
 ];
 
@@ -59,45 +71,55 @@ const Achievements = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.15
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.6,
         ease: "easeOut"
       }
     }
   };
 
   return (
-    <section id="achievements" className="py-20 px-4 md:px-8 bg-gradient-to-br from-gray-50 to-blue-50">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+    <SectionWrapper id="achievements">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+        className="w-full"
+      >
+        {/* Section Header - Consistent with other sections */}
+        <h2 className="section-title">
+          Achievements
+        </h2>
+        
+        {/* Section Description */}
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="section-text text-center max-w-3xl mx-auto mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            My Achievements
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Celebrating milestones in my journey through technology, research, and innovation
-          </p>
-        </motion.div>
+          Celebrating milestones in my journey through technology, research, and innovation
+        </motion.p>
 
+        {/* Achievements Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
           {achievements.map((achievement) => {
             const IconComponent = achievement.icon;
@@ -108,61 +130,64 @@ const Achievements = () => {
                 className="group relative"
               >
                 <div 
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 cursor-pointer transform hover:-translate-y-2"
+                  className="glass-card h-full flex flex-col cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
                   onClick={() => setSelectedAchievement(achievement)}
                 >
-                  {/* Achievement Image */}
-                  <div className="relative h-48 overflow-hidden">
+                  {/* Achievement Header with Icon */}
+                  <div className="relative h-32 md:h-40 overflow-hidden rounded-t-xl mb-4">
                     <div className={`absolute inset-0 bg-gradient-to-br ${achievement.color} opacity-90`} />
-                    {/* Placeholder for image - replace with actual image when available */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <IconComponent className="w-16 h-16 text-white" />
+                      <IconComponent className="w-12 h-12 md:w-16 md:h-16 text-white drop-shadow-lg" />
                     </div>
-                    {/* Uncomment below when you add actual images */}
-                    {/* <img 
-                      src={achievement.image} 
-                      alt={achievement.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                      }}
-                    />
-                    <div className="hidden absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                      <IconComponent className="w-16 h-16 text-white" />
-                    </div> */}
                     
-                    <div className="absolute top-4 right-4">
-                      <span className="bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium">
+                    {/* Category Badge */}
+                    <div className="absolute top-3 right-3">
+                      <span className="bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs md:text-sm font-medium border border-white/20">
                         {achievement.category}
+                      </span>
+                    </div>
+                    
+                    {/* Date Badge */}
+                    <div className="absolute bottom-3 left-3">
+                      <span className="bg-white/90 text-[#333333] px-2 py-1 rounded-full text-xs font-medium">
+                        {achievement.date}
                       </span>
                     </div>
                   </div>
 
                   {/* Achievement Content */}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
-                        {achievement.title}
-                      </h3>
-                      <span className="text-sm text-gray-500 font-medium">
-                        {achievement.date}
-                      </span>
-                    </div>
+                  <div className="flex-1 flex flex-col px-2">
+                    <h3 className="text-lg md:text-xl font-bold text-[#333333] mb-3 group-hover:text-[#00BFA6] transition-colors duration-300">
+                      {achievement.title}
+                    </h3>
 
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className="section-text text-sm md:text-base mb-4 flex-1 leading-relaxed">
                       {achievement.description}
                     </p>
 
-                    <div className="flex flex-wrap gap-2">
-                      {achievement.highlights.map((highlight, index) => (
+                    {/* Highlights */}
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                      {achievement.highlights.slice(0, 2).map((highlight, index) => (
                         <span
                           key={index}
-                          className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm"
+                          className="bg-[#F5F5F5] text-[#3A6EA5] px-3 py-1 rounded-full text-xs font-medium shadow-sm"
                         >
                           {highlight}
                         </span>
                       ))}
+                      {achievement.highlights.length > 2 && (
+                        <span className="text-[#00BFA6] text-xs font-medium px-2 py-1">
+                          +{achievement.highlights.length - 2} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Click to view more */}
+                  <div className="mt-4 pt-4 border-t border-[#00BFA6]/10">
+                    <div className="flex items-center justify-center text-[#00BFA6] text-sm font-medium group-hover:text-[#82E9F5] transition-colors">
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Click to view details
                     </div>
                   </div>
                 </div>
@@ -181,52 +206,58 @@ const Achievements = () => {
             onClick={() => setSelectedAchievement(null)}
           >
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Modal Header */}
               <div className="relative">
-                <div className={`h-64 bg-gradient-to-br ${selectedAchievement.color} flex items-center justify-center`}>
-                  <selectedAchievement.icon className="w-20 h-20 text-white" />
+                <div className={`h-48 md:h-64 bg-gradient-to-br ${selectedAchievement.color} flex items-center justify-center rounded-t-2xl`}>
+                  <selectedAchievement.icon className="w-16 h-16 md:w-20 md:h-20 text-white drop-shadow-lg" />
                 </div>
                 <button
                   onClick={() => setSelectedAchievement(null)}
-                  className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+                  className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors text-xl font-light"
                 >
                   ×
                 </button>
               </div>
               
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold text-gray-800">
+              {/* Modal Content */}
+              <div className="p-6 md:p-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                  <h3 className="text-2xl md:text-3xl font-bold text-[#333333]">
                     {selectedAchievement.title}
                   </h3>
-                  <span className="text-lg text-gray-500 font-medium">
-                    {selectedAchievement.date}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-[#00BFA6] text-white px-4 py-2 rounded-full text-sm font-medium">
+                      {selectedAchievement.category}
+                    </span>
+                    <span className="text-[#333333] font-medium">
+                      {selectedAchievement.date}
+                    </span>
+                  </div>
                 </div>
                 
-                <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                  {selectedAchievement.category}
-                </span>
-                
-                <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                <p className="section-text text-base md:text-lg leading-relaxed mb-6">
                   {selectedAchievement.description}
                 </p>
                 
-                <div className="border-t pt-4">
-                  <h4 className="font-semibold text-gray-800 mb-3">Key Highlights:</h4>
-                  <div className="flex flex-wrap gap-2">
+                {/* All Highlights in Modal */}
+                <div className="border-t border-[#00BFA6]/10 pt-6">
+                  <h4 className="font-semibold text-[#333333] mb-4 text-lg">Key Highlights:</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {selectedAchievement.highlights.map((highlight, index) => (
-                      <span
+                      <div
                         key={index}
-                        className="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg"
+                        className="bg-[#F5F5F5] text-[#3A6EA5] px-4 py-3 rounded-lg flex items-center font-medium"
                       >
+                        <div className="w-2 h-2 bg-[#00BFA6] rounded-full mr-3 flex-shrink-0"></div>
                         {highlight}
-                      </span>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -234,8 +265,8 @@ const Achievements = () => {
             </motion.div>
           </motion.div>
         )}
-      </div>
-    </section>
+      </motion.div>
+    </SectionWrapper>
   );
 };
 
