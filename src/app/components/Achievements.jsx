@@ -12,7 +12,7 @@ const achievements = [
     category: "Competition",
     description: "Selected among Top 35 global teams at Formula Student Germany 2024 Autonomous Challenge. Led the Path Planning team for Team Ojas Racing, developing autonomous navigation algorithms and YOLO-based object detection systems.",
     date: "2024",
-    image: "/images/achievements/formula-student-2024.jpg",
+    image: "public/PHOTO-2025-09-23-00-24-48.jpg",
     icon: Trophy,
     color: "from-[#1E3D58] to-[#3A6EA5]",
     highlights: ["Top 35 globally", "Autonomous Challenge", "Team Leadership"]
