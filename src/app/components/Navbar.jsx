@@ -20,6 +20,7 @@ const Navbar = () => {
     { name: "Experience", id: "experience" },
     { name: "Projects", id: "projects" },
     { name: "Education", id: "education" },
+    { name: "Achievements", id: "achievements" },
     { name: "Articles & Research", id: "articles-research" },
     { name: "Contact", id: "contact" }
   ];
@@ -255,11 +256,11 @@ const Navbar = () => {
           </motion.h1>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex space-x-6 lg:space-x-8">
+          <ul className="hidden md:flex space-x-4 lg:space-x-6">
             {navItems.map((item) => (
               <motion.li key={item.name} className="relative" whileHover={{ y: -2 }}>
                 <button 
-                  className={`text-sm lg:text-base transition-all duration-300 hover:text-[#00BFA6] ${
+                  className={`text-xs lg:text-sm xl:text-base transition-all duration-300 hover:text-[#00BFA6] ${
                     activeSection === item.id ? "text-[#00BFA6]" : "text-[#F5F5F5]"
                   }`}
                   onClick={(e) => handleNavClick(item.id, e)}
