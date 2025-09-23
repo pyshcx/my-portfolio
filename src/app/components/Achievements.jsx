@@ -1,65 +1,47 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Award, Trophy, Star, Medal, ExternalLink } from 'lucide-react';
+import { Award, Trophy, Star, Medal, ExternalLink, Car } from 'lucide-react';
 import { useState } from 'react';
+import Image from 'next/image';
 import SectionWrapper from './SectionWrapper';
 
 const achievements = [
   {
     id: 1,
-    title: "Formula Student Germany 2024",
-    category: "Competition",
-    description: "Selected among Top 35 global teams at Formula Student Germany 2024 Autonomous Challenge. Led the Path Planning team for Team Ojas Racing, developing autonomous navigation algorithms and YOLO-based object detection systems.",
-    date: "2024",
-    image: "public/PHOTO-2025-09-23-00-24-48.jpg",
+    title: "Best AI/ML Model Award - VIT Engineers Day 2025",
+    category: "Research Award",
+    description: "Won the Best AI/ML Model award at Vellore Institute of Technology Engineers Day 2025 for the project 'Unlocking the Cosmos: AI for Astrochemical Reaction Networks.' Developed an innovative AI model to understand and predict chemistry happening in deep space, finding patterns in cosmic data.",
+    date: "2025",
+    image: "/img_astro_award.jpg",
     icon: Trophy,
     color: "from-[#1E3D58] to-[#3A6EA5]",
-    highlights: ["Top 35 globally", "Autonomous Challenge", "Team Leadership"]
+    highlights: [
+      "Best AI/ML Model Award",
+      "VIT Engineers Day 2025", 
+      "Astrochemical Research",
+      "Team Leadership",
+      "Chancellor Recognition",
+      "Deep Space Chemistry AI"
+    ]
   },
   {
     id: 2,
-    title: "Machine Learning Specialization",
-    category: "Certification",
-    description: "Completed comprehensive Machine Learning Specialization from DeepLearning.AI & Coursera, mastering supervised learning, unsupervised learning, and advanced ML techniques including neural networks and deep learning.",
+    title: "Formula Student Germany 2024 - Team Ojas Racing",
+    category: "International Competition",
+    description: "Participated in the prestigious Formula Student Germany 2024 at Hockenheimring as an autonomous systems member of Team Ojas Racing from VIT. Engaged in designing and building single-seat formula race cars, focusing on autonomous systems and cutting-edge automotive technologies.",
     date: "2024",
-    image: "/images/achievements/ml-certification.jpg",
-    icon: Award,
+    image: "/formula_student_germany.jpg", // You can add your FSG image here
+    icon: Car,
     color: "from-[#3A6EA5] to-[#00BFA6]",
-    highlights: ["DeepLearning.AI", "Coursera", "Advanced ML Techniques"]
-  },
-  {
-    id: 3,
-    title: "Odoo Hackathon Finalist",
-    category: "Hackathon",
-    description: "Reached the finals of Odoo Hackathon 2024, showcasing innovative solutions and technical excellence in enterprise software development and business automation.",
-    date: "2024",
-    image: "/images/achievements/odoo-hackathon.jpg",
-    icon: Star,
-    color: "from-[#00BFA6] to-[#82E9F5]",
-    highlights: ["Finalist Position", "Enterprise Solutions", "Innovation"]
-  },
-  {
-    id: 4,
-    title: "Top 10% Recognition - Alfaleus Tech",
-    category: "Internship",
-    description: "Achieved Top 10% recognition at Alfaleus Tech Internship Bootcamp 2025, demonstrating exceptional performance in advanced technology projects and collaborative development.",
-    date: "2025",
-    image: "/images/achievements/alfaleus-recognition.jpg",
-    icon: Medal,
-    color: "from-[#1E3D58] via-[#3A6EA5] to-[#00BFA6]",
-    highlights: ["Top 10%", "Bootcamp Excellence", "Advanced Tech"]
-  },
-  {
-    id: 5,
-    title: "Generative AI using IBM Watsonx",
-    category: "Certification",
-    description: "Completed advanced certification in Generative AI using IBM Watsonx platform, gaining expertise in large language models, prompt engineering, and enterprise AI solutions.",
-    date: "2025",
-    image: "/images/achievements/ibm-watsonx.jpg",
-    icon: Award,
-    color: "from-[#3A6EA5] to-[#00BFA6]",
-    highlights: ["IBM Career Education", "Generative AI", "Enterprise Solutions"]
+    highlights: [
+      "Hockenheimring Racing Circuit",
+      "Autonomous Systems Specialist",
+      "International Competition",
+      "Industry Networking",
+      "Team Ojas Racing",
+      "VIT University"
+    ]
   }
 ];
 
@@ -97,7 +79,7 @@ const Achievements = () => {
         viewport={{ once: true, margin: "-100px" }}
         className="w-full"
       >
-        {/* Section Header - Consistent with other sections */}
+        {/* Section Header */}
         <h2 className="section-title">
           Achievements
         </h2>
@@ -113,13 +95,13 @@ const Achievements = () => {
           Celebrating milestones in my journey through technology, research, and innovation
         </motion.p>
 
-        {/* Achievements Grid */}
+        {/* Achievements Grid - Now supports multiple achievements */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
         >
           {achievements.map((achievement) => {
             const IconComponent = achievement.icon;
@@ -133,16 +115,28 @@ const Achievements = () => {
                   className="glass-card h-full flex flex-col cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
                   onClick={() => setSelectedAchievement(achievement)}
                 >
-                  {/* Achievement Header with Icon */}
-                  <div className="relative h-32 md:h-40 overflow-hidden rounded-t-xl mb-4">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${achievement.color} opacity-90`} />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <IconComponent className="w-12 h-12 md:w-16 md:h-16 text-white drop-shadow-lg" />
+                  {/* Achievement Header with Image */}
+                  <div className="relative h-48 overflow-hidden rounded-t-xl mb-4">
+                    {/* Background Image */}
+                    <div className="absolute inset-0">
+                      {achievement.image ? (
+                        <Image
+                          src={achievement.image}
+                          alt={achievement.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className={`w-full h-full bg-gradient-to-br ${achievement.color}`} />
+                      )}
+                      {/* Light overlay for better badge readability */}
+                      <div className="absolute inset-0 bg-black/20" />
                     </div>
                     
                     {/* Category Badge */}
                     <div className="absolute top-3 right-3">
-                      <span className="bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs md:text-sm font-medium border border-white/20">
+                      <span className="bg-white/90 backdrop-blur-sm text-[#333333] px-3 py-1 rounded-full text-sm font-medium border border-white/20">
                         {achievement.category}
                       </span>
                     </div>
@@ -157,17 +151,17 @@ const Achievements = () => {
 
                   {/* Achievement Content */}
                   <div className="flex-1 flex flex-col px-2">
-                    <h3 className="text-lg md:text-xl font-bold text-[#333333] mb-3 group-hover:text-[#00BFA6] transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-[#333333] mb-3 group-hover:text-[#00BFA6] transition-colors duration-300">
                       {achievement.title}
                     </h3>
 
-                    <p className="section-text text-sm md:text-base mb-4 flex-1 leading-relaxed">
+                    <p className="section-text text-base mb-4 flex-1 leading-relaxed">
                       {achievement.description}
                     </p>
 
                     {/* Highlights */}
                     <div className="flex flex-wrap gap-2 mt-auto">
-                      {achievement.highlights.slice(0, 2).map((highlight, index) => (
+                      {achievement.highlights.slice(0, 3).map((highlight, index) => (
                         <span
                           key={index}
                           className="bg-[#F5F5F5] text-[#3A6EA5] px-3 py-1 rounded-full text-xs font-medium shadow-sm"
@@ -175,9 +169,9 @@ const Achievements = () => {
                           {highlight}
                         </span>
                       ))}
-                      {achievement.highlights.length > 2 && (
+                      {achievement.highlights.length > 3 && (
                         <span className="text-[#00BFA6] text-xs font-medium px-2 py-1">
-                          +{achievement.highlights.length - 2} more
+                          +{achievement.highlights.length - 3} more
                         </span>
                       )}
                     </div>
@@ -213,23 +207,36 @@ const Achievements = () => {
               className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Modal Header */}
+              {/* Modal Header with Image */}
               <div className="relative">
-                <div className={`h-48 md:h-64 bg-gradient-to-br ${selectedAchievement.color} flex items-center justify-center rounded-t-2xl`}>
-                  <selectedAchievement.icon className="w-16 h-16 md:w-20 md:h-20 text-white drop-shadow-lg" />
+                <div className="h-64 overflow-hidden rounded-t-2xl">
+                  {selectedAchievement.image ? (
+                    <Image
+                      src={selectedAchievement.image}
+                      alt={selectedAchievement.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  ) : (
+                    <div className={`w-full h-full bg-gradient-to-br ${selectedAchievement.color}`} />
+                  )}
+                  {/* Light overlay for close button visibility */}
+                  <div className="absolute inset-0 bg-black/10" />
                 </div>
+                
                 <button
                   onClick={() => setSelectedAchievement(null)}
-                  className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors text-xl font-light"
+                  className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-[#333333] w-10 h-10 rounded-full flex items-center justify-center hover:bg-white transition-colors text-xl font-light shadow-lg"
                 >
                   ×
                 </button>
               </div>
               
               {/* Modal Content */}
-              <div className="p-6 md:p-8">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
-                  <h3 className="text-2xl md:text-3xl font-bold text-[#333333]">
+              <div className="p-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                  <h3 className="text-3xl font-bold text-[#333333]">
                     {selectedAchievement.title}
                   </h3>
                   <div className="flex items-center gap-3">
@@ -242,9 +249,40 @@ const Achievements = () => {
                   </div>
                 </div>
                 
-                <p className="section-text text-base md:text-lg leading-relaxed mb-6">
-                  {selectedAchievement.description}
-                </p>
+                {/* Dynamic modal content based on achievement */}
+                {selectedAchievement.id === 1 ? (
+                  <>
+                    <p className="section-text text-lg leading-relaxed mb-6">
+                      This groundbreaking project focused on developing AI models to understand astrochemical reaction networks in deep space. Working with an incredible team, we created innovative algorithms that could identify patterns in cosmic data and predict chemical reactions occurring in the vast universe.
+                    </p>
+
+                    <div className="bg-[#F5F5F5] p-6 rounded-xl mb-6">
+                      <h4 className="font-semibold text-[#333333] mb-3 text-lg">Project Details:</h4>
+                      <p className="section-text">
+                        The recognition came from Chancellor Dr. G. Viswanathan and Dean Dr. Jaisankar N at VIT's prestigious Engineers Day celebration. This achievement represents months of dedicated research into the intersection of artificial intelligence and space chemistry, pushing the boundaries of what's possible in computational astrophysics.
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="section-text text-lg leading-relaxed mb-6">
+                      An incredible journey at the prestigious Hockenheimring racing circuit in Germany, where I contributed to Team Ojas Racing's autonomous systems development. This global competition challenged us to design and build single-seat formula race cars while focusing on the complete package of design, performance, financial planning, and market strategy.
+                    </p>
+
+                    <div className="bg-[#F5F5F5] p-6 rounded-xl mb-6">
+                      <h4 className="font-semibold text-[#333333] mb-3 text-lg">Experience Highlights:</h4>
+                      <p className="section-text mb-4">
+                        <strong>Technical Growth:</strong> Gained hands-on experience in autonomous systems, tackling real-world engineering challenges and diving deep into cutting-edge automotive technologies.
+                      </p>
+                      <p className="section-text mb-4">
+                        <strong>Industry Networking:</strong> Connected with brilliant students from universities worldwide and industry leaders from renowned companies like Porsche, Bosch, Tesla, and Mercedes.
+                      </p>
+                      <p className="section-text">
+                        <strong>Learning & Feedback:</strong> Participated in insightful review sessions with judges, receiving valuable feedback and guidance for future projects and career development.
+                      </p>
+                    </div>
+                  </>
+                )}
                 
                 {/* All Highlights in Modal */}
                 <div className="border-t border-[#00BFA6]/10 pt-6">

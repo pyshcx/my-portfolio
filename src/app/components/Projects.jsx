@@ -30,7 +30,7 @@ const projects = [
     description:
       "NLP pipeline that surfaces actionable insights from customer reviews.",
     githubLink: "https://github.com/pyshcx/car-rental-feedback-analyzer",
-    hostedLink: "https://car-rental-feedback-analyzer.streamlit.app/"
+    hostedLink: "https://car-rental-feedback-analyzer.pranayshah.online/"
   }
 ];
 
