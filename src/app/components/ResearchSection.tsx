@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { ChevronRight, Award, Clock } from 'lucide-react';
 
 const researchProjects = [
@@ -57,7 +57,7 @@ const statusColors = {
 const ResearchSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -68,7 +68,7 @@ const ResearchSection = () => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20, scale: 0.95 },
     visible: {
       opacity: 1,
@@ -76,7 +76,7 @@ const ResearchSection = () => {
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: 'easeOut'
+        ease: [0.16, 1, 0.3, 1] // cubic-bezier approximation of easeOut
       }
     }
   };
