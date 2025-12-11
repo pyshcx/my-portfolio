@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   trailingSlash: false,
-  swcMinify: true,
   async headers() {
     return [
       {
