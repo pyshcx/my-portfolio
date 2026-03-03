@@ -16,10 +16,10 @@ export const metadata: Metadata = {
   },
   description: 'Portfolio of Pranay Shah, showcasing expertise in AI, ML, autonomous systems, and Formula Student projects. Passionate about path planning, SLAM, and computer vision.',
   keywords: [
-    'AI Engineer', 
-    'Machine Learning', 
-    'Autonomous Systems', 
-    'Formula Student', 
+    'AI Engineer',
+    'Machine Learning',
+    'Autonomous Systems',
+    'Formula Student',
     'React Developer',
     'Path Planning',
     'SLAM',
@@ -70,9 +70,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
+
 };
 
 export const viewport: Viewport = {
@@ -99,7 +97,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#00BFA6" />
       </head>
-      <body 
+      <body
         className="bg-gradient-to-br from-[#1E3D58] via-[#3A6EA5] to-[#00BFA6] antialiased"
         suppressHydrationWarning
       >

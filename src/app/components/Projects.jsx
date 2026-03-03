@@ -1,245 +1,92 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { FaGithub, FaCode, FaChevronLeft, FaChevronRight, FaExternalLinkAlt } from "react-icons/fa";
 import SectionWrapper from "./SectionWrapper";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCarousel } from "../hooks/useCarousel";
 
 /* ──────────────── 1. DATA ──────────────── */
 const projects = [
   {
+    title: "AI-Powered Threat Detection Pipeline",
+    description:
+      "Built an ML pipeline to automate network anomaly detection and alert triage. Applies unsupervised clustering and NLP-based log parsing to surface real threats from noise — reducing analyst workload significantly.",
+    domain: "cyber",
+    githubLink: "https://github.com/pyshcx"
+  },
+  {
     title: "Hand Tracking Volume Controller",
     description:
-      "Built a real-time hand-tracking system with Python and OpenCV.",
+      "Built a real-time hand-tracking system with Python and OpenCV that maps hand gestures to system volume — zero-latency, no hardware required.",
+    domain: "aiml",
     githubLink: "https://github.com/pyshcx/volumetracking"
   },
   {
-    title: "Automated News Summarization",
+    title: "Automated News Summarization & Tweet Bot",
     description:
-      "Fetches, summarizes and auto-tweets the latest AI/ML news.",
+      "Fetches, summarizes and auto-tweets the latest AI/ML news using NLP models. Combines LLM-based summarization with Twitter API for fully automated content curation.",
+    domain: "aiml",
     githubLink: "https://github.com/pyshcx/ai-news-tweet-bot"
   },
   {
     title: "Delaunay Triangulation Path Planner",
     description:
-      "Path-planning algorithm for autonomous nav using Delaunay Triangulation.",
+      "Path-planning algorithm for autonomous formula-student vehicle navigation using Delaunay Triangulation — deployed on Team Ojas Racing's real car at Formula Bharat.",
+    domain: "aiml",
     githubLink: "https://github.com/pyshcx/DelaunyTriangulation"
   },
   {
     title: "AI-Powered Car-Rental Feedback Analysis",
     description:
-      "NLP pipeline that surfaces actionable insights from customer reviews.",
+      "NLP pipeline that surfaces actionable insights from customer reviews, combining sentiment analysis with topic modelling — live hosted app.",
+    domain: "dev",
     githubLink: "https://github.com/pyshcx/car-rental-feedback-analyzer",
     hostedLink: "https://car-rental-feedback-analyzer.pranayshah.online/"
   }
 ];
 
+/* domain → style map */
+const domainStyles = {
+  cyber: {
+    border: "border-[var(--color-cyber)]/25 hover:border-[var(--color-cyber)]/50",
+    iconBg: "rgba(255,107,53,0.15)",
+    iconColor: "var(--color-cyber)",
+    badge: <span className="badge-cyber">🔒 Cybersecurity</span>,
+  },
+  aiml: {
+    border: "border-[var(--color-teal)]/15 hover:border-[var(--color-teal)]/35",
+    iconBg: "rgba(0,191,166,0.12)",
+    iconColor: "var(--color-teal)",
+    badge: <span className="badge-ai">🤖 AI / ML</span>,
+  },
+  dev: {
+    border: "border-[var(--color-info)]/20 hover:border-[var(--color-info)]/40",
+    iconBg: "rgba(130,233,245,0.10)",
+    iconColor: "var(--color-info)",
+    badge: <span className="badge-dev">💻 Full-Stack</span>,
+  },
+};
+
 /* ──────────────── 2. COMPONENT ──────────────── */
 const Projects = () => {
-  /* state */
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const containerRef = useRef(null);
-  const touchStartX = useRef(null);
-  const touchStartY = useRef(null);
-  const isDragging = useRef(false);
+  const {
+    activeIndex,
+    isMounted,
+    isMobile,
+    prefersReducedMotion,
+    visibleItems,
+    gridClass,
+    containerRef,
+    count,
+    prevSlide,
+    nextSlide,
+    goToSlide,
+    pauseTemporarily,
+    swipeHandlers,
+  } = useCarousel(projects);
 
-  const slides = projects.length;
-  const max = slides - 1;
+  if (!isMounted) return null;
 
-  /* ———————————————————— 1. Mount handling ———————————————————— */
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  /* ———————————————————— 2. Responsive helper ———————————————————— */
-  const [screenSize, setScreenSize] = useState({
-    width: typeof window !== "undefined" ? window.innerWidth : 1024,
-    height: typeof window !== "undefined" ? window.innerHeight : 768
-  });
-
-  const isMobile = screenSize.width < 768;
-  const isTablet = screenSize.width >= 768 && screenSize.width < 1024;
-  const isDesktop = screenSize.width >= 1024;
-
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    const updateScreenSize = () => {
-      setScreenSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
-
-    updateScreenSize();
-    window.addEventListener("resize", updateScreenSize);
-    return () => window.removeEventListener("resize", updateScreenSize);
-  }, [isMounted]);
-
-  /* ———————————————————— 3. Auto-scroll ———————————————————— */
-  useEffect(() => {
-    if (isPaused || !isMounted) return;
-    const id = setInterval(() => {
-      setActiveIndex((prev) => (prev >= max ? 0 : prev + 1));
-    }, 5000);
-    return () => clearInterval(id);
-  }, [isPaused, max, isMounted]);
-
-  /* ———————————————————— 4. Navigation functions ———————————————————— */
-  const prev = useCallback(() => {
-    setActiveIndex((i) => (i <= 0 ? max : i - 1));
-  }, [max]);
-
-  const next = useCallback(() => {
-    setActiveIndex((i) => (i >= max ? 0 : i + 1));
-  }, [max]);
-
-  const goToSlide = useCallback((index) => {
-    setActiveIndex(index);
-  }, []);
-
-  /* ———————————————————— 5. Keyboard controls ———————————————————— */
-  useEffect(() => {
-    if (!isMounted) return;
-
-    const onKey = (e) => {
-      if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        prev();
-        setIsPaused(true);
-        setTimeout(() => setIsPaused(false), 2000);
-      }
-      if (e.key === "ArrowRight") {
-        e.preventDefault();
-        next();
-        setIsPaused(true);
-        setTimeout(() => setIsPaused(false), 2000);
-      }
-    };
-    
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [prev, next, isMounted]);
-
-  /* ———————————————————— 6. Touch/Swipe controls ———————————————————— */
-  const handleTouchStart = useCallback((e) => {
-    const touch = e.touches[0];
-    touchStartX.current = touch.clientX;
-    touchStartY.current = touch.clientY;
-    isDragging.current = false;
-    setIsPaused(true);
-  }, []);
-
-  const handleTouchMove = useCallback((e) => {
-    if (!touchStartX.current || !touchStartY.current) return;
-    
-    const touch = e.touches[0];
-    const deltaX = Math.abs(touch.clientX - touchStartX.current);
-    const deltaY = Math.abs(touch.clientY - touchStartY.current);
-    
-    if (deltaX > deltaY && deltaX > 10) {
-      e.preventDefault();
-      isDragging.current = true;
-    }
-  }, []);
-
-  const handleTouchEnd = useCallback((e) => {
-    if (!touchStartX.current || !isDragging.current) {
-      setIsPaused(false);
-      return;
-    }
-
-    const touch = e.changedTouches[0];
-    const deltaX = touchStartX.current - touch.clientX;
-    const minSwipeDistance = 50;
-
-    if (Math.abs(deltaX) > minSwipeDistance) {
-      if (deltaX > 0) {
-        next();
-      } else {
-        prev();
-      }
-    }
-
-    touchStartX.current = null;
-    touchStartY.current = null;
-    isDragging.current = false;
-    
-    setTimeout(() => setIsPaused(false), 2000);
-  }, [next, prev]);
-
-  /* ———————————————————— 7. Mouse drag for desktop ———————————————————— */
-  const handleMouseDown = useCallback((e) => {
-    if (isMobile) return;
-    touchStartX.current = e.clientX;
-    isDragging.current = false;
-    setIsPaused(true);
-  }, [isMobile]);
-
-  const handleMouseMove = useCallback((e) => {
-    if (isMobile || !touchStartX.current) return;
-    const deltaX = Math.abs(e.clientX - touchStartX.current);
-    if (deltaX > 10) {
-      isDragging.current = true;
-    }
-  }, [isMobile]);
-
-  const handleMouseUp = useCallback((e) => {
-    if (isMobile || !touchStartX.current || !isDragging.current) {
-      setIsPaused(false);
-      return;
-    }
-
-    const deltaX = touchStartX.current - e.clientX;
-    const minSwipeDistance = 80;
-
-    if (Math.abs(deltaX) > minSwipeDistance) {
-      if (deltaX > 0) {
-        next();
-      } else {
-        prev();
-      }
-    }
-
-    touchStartX.current = null;
-    isDragging.current = false;
-    setTimeout(() => setIsPaused(false), 2000);
-  }, [isMobile, next, prev]);
-
-  /* ———————————————————— 8. Visible projects calculation ———————————————————— */
-  const visibleProjects = useMemo(() => {
-    if (isMobile) {
-      return [projects[activeIndex]];
-    } else if (isTablet) {
-      const visible = [];
-      for (let i = 0; i < 2; i++) {
-        const index = (activeIndex + i) % slides;
-        visible.push({ ...projects[index], originalIndex: index });
-      }
-      return visible;
-    } else {
-      const visible = [];
-      for (let i = 0; i < 3; i++) {
-        const index = (activeIndex + i) % slides;
-        visible.push({ ...projects[index], originalIndex: index });
-      }
-      return visible;
-    }
-  }, [activeIndex, slides, isMobile, isTablet]);
-
-  /* ———————————————————— 9. Reduced motion preference ———————————————————— */
-  const prefersReducedMotion = useMemo(() => {
-    if (!isMounted) return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, [isMounted]);
-
-  if (!isMounted) {
-    return null;
-  }
-
-  /* ———————————————————— 10. Render ———————————————————— */
   return (
     <SectionWrapper id="projects">
       <motion.div
@@ -249,42 +96,26 @@ const Projects = () => {
         viewport={{ once: true, margin: "-100px" }}
         className="w-full"
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-[#333] text-center mb-8 md:mb-12">
-          Projects
-        </h2>
+        <h2 className="section-title">Projects</h2>
 
         <div className="relative w-full max-w-7xl mx-auto px-4">
-          {/* Navigation arrows - Desktop and Tablet only */}
+          {/* Navigation arrows — Desktop / Tablet only */}
           {!isMobile && (
             <>
               <button
                 aria-label="Previous Project"
-                onClick={() => {
-                  prev();
-                  setIsPaused(true);
-                  setTimeout(() => setIsPaused(false), 2000);
-                }}
-                className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-[#00BFA6] bg-opacity-90 text-white shadow-lg hover:bg-[#00d3b8] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#00BFA6] disabled:opacity-50"
-                style={{ 
-                  WebkitTapHighlightColor: 'transparent',
-                  touchAction: 'manipulation'
-                }}
+                type="button"
+                onClick={() => { prevSlide(); pauseTemporarily(); }}
+                className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-[var(--color-teal)] bg-opacity-90 text-slate-950 shadow-lg hover:bg-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]"
               >
                 <FaChevronLeft className="text-sm md:text-base" />
               </button>
 
               <button
                 aria-label="Next Project"
-                onClick={() => {
-                  next();
-                  setIsPaused(true);
-                  setTimeout(() => setIsPaused(false), 2000);
-                }}
-                className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-[#00BFA6] bg-opacity-90 text-white shadow-lg hover:bg-[#00d3b8] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#00BFA6] disabled:opacity-50"
-                style={{ 
-                  WebkitTapHighlightColor: 'transparent',
-                  touchAction: 'manipulation'
-                }}
+                type="button"
+                onClick={() => { nextSlide(); pauseTemporarily(); }}
+                className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-[var(--color-teal)] bg-opacity-90 text-slate-950 shadow-lg hover:bg-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]"
               >
                 <FaChevronRight className="text-sm md:text-base" />
               </button>
@@ -292,140 +123,112 @@ const Projects = () => {
           )}
 
           {/* Projects container */}
-          <div 
-            className={`overflow-hidden ${!isMobile ? 'mx-8 md:mx-16' : 'mx-0'}`}
+          <div
+            className={`overflow-hidden ${!isMobile ? "mx-8 md:mx-16" : "mx-0"}`}
             ref={containerRef}
           >
             <div
               className="touch-pan-y select-none"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              style={{ 
-                WebkitTouchCallout: 'none',
-                WebkitUserSelect: 'none',
-                userSelect: 'none'
-              }}
+              {...swipeHandlers}
+              style={{ WebkitTouchCallout: "none", WebkitUserSelect: "none", userSelect: "none" }}
             >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
-                  className={`grid gap-4 md:gap-6 ${
-                    isMobile 
-                      ? 'grid-cols-1' 
-                      : isTablet 
-                      ? 'grid-cols-2' 
-                      : 'grid-cols-1 lg:grid-cols-3'
-                  }`}
+                  className={`grid gap-4 md:gap-6 ${gridClass}`}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  transition={
-                    prefersReducedMotion
-                      ? { duration: 0 }
-                      : { duration: 0.4, ease: "easeInOut" }
-                  }
+                  transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: "easeInOut" }}
                 >
-                  {visibleProjects.map((project, i) => (
-                    <motion.div
-                      key={isMobile ? `mobile-${activeIndex}` : `${project.originalIndex || activeIndex}-${i}`}
-                      className="w-full"
-                      initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, delay: i * 0.1 }}
-                    >
-                      <div
-                        className="bg-white bg-opacity-5 backdrop-blur-sm p-4 md:p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-full flex flex-col transition-all duration-300 hover:bg-opacity-10 hover:border-[#00BFA6]/20 hover:shadow-xl"
-                        style={{ 
-                          WebkitBackdropFilter: 'blur(8px)',
-                          backdropFilter: 'blur(8px)',
-                          minHeight: '400px'
-                        }}
+                  {visibleItems.map((project, i) => {
+                    const style = domainStyles[project.domain] || domainStyles.aiml;
+                    return (
+                      <motion.div
+                        key={isMobile ? `mobile-${activeIndex}` : `${project.originalIndex}-${i}`}
+                        className="w-full"
+                        initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3, delay: i * 0.1 }}
                       >
-                        <div className="flex-grow flex flex-col">
-                          <div className="flex items-start mb-4">
-                            <div className="bg-[#00BFA6] bg-opacity-10 p-2 md:p-3 rounded-full mr-3 flex-shrink-0">
-                              <FaCode className="text-[#00BFA6] text-lg md:text-xl" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h3 className="text-base md:text-lg font-semibold text-[#333] leading-tight mb-2">
-                                {project.title}
-                              </h3>
-                            </div>
-                          </div>
-                          
-                          <div className="flex-grow">
-                            <p className="text-[#333] text-sm md:text-base leading-relaxed mb-4">
-                              {project.description}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Button section with inversed colors but same positions */}
-                        <div className="mt-auto pt-4">
-                          {project.hostedLink ? (
-                            // Car Rental project gets both buttons with INVERSED colors but same positions
-                            <div className="flex flex-col gap-3">
-                              {/* Live Demo button - now SECONDARY style (outlined) but still first */}
-                              <motion.a
-                                href={project.hostedLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="w-full bg-transparent border-2 border-[#00BFA6]/40 text-[#333] py-3 px-5 rounded-lg hover:bg-[#00BFA6]/5 hover:border-[#00BFA6]/60 transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium"
-                                style={{ 
-                                  WebkitTapHighlightColor: 'transparent',
-                                  touchAction: 'manipulation'
-                                }}
+                        <div
+                          className={`card p-4 md:p-6 shadow-lg h-full flex flex-col transition-all duration-300 hover:shadow-xl ${style.border}`}
+                          style={{ minHeight: "400px" }}
+                        >
+                          <div className="flex-grow flex flex-col">
+                            <div className="flex items-start mb-4">
+                              <div
+                                className="p-2 md:p-3 rounded-full mr-3 flex-shrink-0"
+                                style={{ background: style.iconBg }}
                               >
-                                <FaExternalLinkAlt className="mr-2 text-sm" />
-                                Live Demo
-                              </motion.a>
-                              
-                              {/* GitHub button - now PRIMARY style (solid teal) but still second */}
+                                <FaCode
+                                  className="text-lg md:text-xl"
+                                  style={{ color: style.iconColor }}
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] leading-tight mb-2">
+                                  {project.title}
+                                </h3>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {style.badge}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex-grow">
+                              <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-4">
+                                {project.description}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Buttons */}
+                          <div className="mt-auto pt-4">
+                            {project.hostedLink ? (
+                              <div className="flex flex-col gap-3">
+                                <motion.a
+                                  href={project.hostedLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  className="w-full bg-transparent border-2 border-[var(--color-teal)]/40 text-[var(--color-teal)] py-3 px-5 rounded-lg hover:bg-[var(--color-teal)]/5 hover:border-[var(--color-teal)]/60 transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium"
+                                >
+                                  <FaExternalLinkAlt className="mr-2 text-sm" />
+                                  Live Demo
+                                </motion.a>
+
+                                <motion.a
+                                  href={project.githubLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  className="w-full bg-[var(--color-teal)] text-slate-950 py-3 px-5 rounded-lg hover:bg-white transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium shadow-md hover:shadow-lg"
+                                >
+                                  <FaGithub className="mr-2 text-base" />
+                                  View on GitHub
+                                </motion.a>
+                              </div>
+                            ) : (
                               <motion.a
                                 href={project.githubLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="w-full bg-[#00BFA6] text-white py-3 px-5 rounded-lg hover:bg-[#82E9F5] hover:text-[#333] transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium shadow-md hover:shadow-lg"
-                                style={{ 
-                                  WebkitTapHighlightColor: 'transparent',
-                                  touchAction: 'manipulation'
-                                }}
+                                className="w-full btn-primary flex items-center justify-center"
                               >
                                 <FaGithub className="mr-2 text-base" />
                                 View on GitHub
                               </motion.a>
-                            </div>
-                          ) : (
-                            // All other projects get only GitHub button (unchanged)
-                            <motion.a
-                              href={project.githubLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              className="w-full bg-[#00BFA6] text-white py-3 px-5 rounded-lg hover:bg-[#82E9F5] hover:text-[#333] transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium shadow-md hover:shadow-lg"
-                              style={{ 
-                                WebkitTapHighlightColor: 'transparent',
-                                touchAction: 'manipulation'
-                              }}
-                            >
-                              <FaGithub className="mr-2 text-base" />
-                              View on GitHub
-                            </motion.a>
-                          )}
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    );
+                  })}
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -436,21 +239,13 @@ const Projects = () => {
             {projects.map((_, idx) => (
               <button
                 key={idx}
-                onClick={() => {
-                  setIsPaused(true);
-                  goToSlide(idx);
-                  setTimeout(() => setIsPaused(false), 2000);
-                }}
-                className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#00BFA6] focus:ring-offset-1 ${
-                  activeIndex === idx
-                    ? "bg-[#00BFA6] scale-125 shadow-md"
-                    : "bg-gray-300 hover:bg-gray-400 hover:scale-110"
-                }`}
+                type="button"
+                onClick={() => { pauseTemporarily(); goToSlide(idx); }}
+                className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)] focus:ring-offset-1 ${activeIndex === idx
+                    ? "bg-[var(--color-teal)] scale-125 shadow-md"
+                    : "bg-slate-700 hover:bg-slate-600 hover:scale-110"
+                  }`}
                 aria-label={`Go to project ${idx + 1}`}
-                style={{ 
-                  WebkitTapHighlightColor: 'transparent',
-                  touchAction: 'manipulation'
-                }}
               />
             ))}
           </div>

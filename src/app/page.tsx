@@ -17,6 +17,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import MediumSlider from './components/MediumSlider';
 import ResearchSection from './components/ResearchSection';
+import Skills from './components/Skills';
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +40,7 @@ export default function Page() {
             <div className="continuous-content space-y-8">
               <Home />
               <About />
+              <Skills />
               <Experiences />
               <Projects />
               <Education />
@@ -49,7 +51,7 @@ export default function Page() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-7xl mx-auto">
                   {/* Articles Section */}
                   <div className="flex flex-col items-center">
-                    <h2 className="text-3xl font-bold text-[#333333] text-center mb-6">My Articles</h2>
+                    <h2 className="text-3xl font-bold text-[#E8F0FE] text-center mb-6">My Articles</h2>
                     <div className="w-full max-w-md mx-auto">
                       <MediumSlider />
                     </div>
@@ -57,7 +59,7 @@ export default function Page() {
 
                   {/* Research Section */}
                   <div className="flex flex-col items-center">
-                    <h2 className="text-3xl font-bold text-[#333333] text-center mb-6">My Research</h2>
+                    <h2 className="text-3xl font-bold text-[#E8F0FE] text-center mb-6">My Research</h2>
                     <div className="w-full max-w-md mx-auto">
                       <ResearchSection />
                     </div>
