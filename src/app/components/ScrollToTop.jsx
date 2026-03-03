@@ -2,64 +2,44 @@
 
 import { useState, useEffect } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ScrollToTop = () => {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    // Show button when user scrolls down 100px
     const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setShowButton(true);
-      } else {
-        setShowButton(false);
-      }
+      setShowButton(window.scrollY > 100);
     };
 
-    // Add event listener
-    window.addEventListener('scroll', handleScroll);
-    
-    // Call handler right away to check initial scroll position
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    
-    // Remove event listener on cleanup
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []); // Empty dependency array means this runs once on mount
 
-  // Function to scroll back to top
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return showButton ? (
-    <button
-      onClick={scrollToTop}
-      style={{
-        position: 'fixed',
-        bottom: '30px',
-        right: '30px',
-        backgroundColor: '#00BFA6',
-        color: 'white',
-        width: '50px',
-        height: '50px',
-        borderRadius: '50%',
-        border: 'none',
-        cursor: 'pointer',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 9999,
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
-      }}
-    >
-      <FaArrowUp />
-    </button>
-  ) : null;
+  return (
+    <AnimatePresence>
+      {showButton && (
+        <motion.button
+          type="button"
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.2 }}
+          className="fixed bottom-8 right-8 bg-[var(--color-teal)] text-white w-12 h-12 rounded-full flex items-center justify-center z-50 shadow-lg hover:bg-white hover:text-slate-950 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)] focus:ring-offset-2"
+        >
+          <FaArrowUp />
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
 };
 
 export default ScrollToTop;

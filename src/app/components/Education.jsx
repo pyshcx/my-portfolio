@@ -12,7 +12,7 @@ const Education = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const scrollRef = useRef(null);
-  
+
   // Education data
   const educations = [
     {
@@ -40,10 +40,10 @@ const Education = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => {
       window.removeEventListener('resize', checkMobile);
     };
@@ -52,15 +52,15 @@ const Education = () => {
   // Auto-scroll functionality
   useEffect(() => {
     let autoScrollInterval;
-    
+
     if (isMobile && !isPaused) {
       autoScrollInterval = setInterval(() => {
-        setActiveIndex((prevIndex) => 
+        setActiveIndex((prevIndex) =>
           prevIndex === educations.length - 1 ? 0 : prevIndex + 1
         );
       }, 5000); // Change slide every 5 seconds
     }
-    
+
     return () => {
       if (autoScrollInterval) {
         clearInterval(autoScrollInterval);
@@ -73,11 +73,11 @@ const Education = () => {
     setIsPaused(true); // Pause auto-scroll when user interacts
     setTouchStart(e.targetTouches[0].clientX);
   };
-  
+
   const handleTouchMove = (e) => {
     setTouchEnd(e.targetTouches[0].clientX);
   };
-  
+
   const handleTouchEnd = () => {
     if (touchStart - touchEnd > 50) {
       // Swipe left
@@ -85,14 +85,14 @@ const Education = () => {
         setActiveIndex(activeIndex + 1);
       }
     }
-    
+
     if (touchStart - touchEnd < -50) {
       // Swipe right
       if (activeIndex > 0) {
         setActiveIndex(activeIndex - 1);
       }
     }
-    
+
     // Resume auto-scroll after a delay
     setTimeout(() => setIsPaused(false), 5000);
   };
@@ -113,48 +113,48 @@ const Education = () => {
         transition={{ duration: 0.8 }}
         viewport={{ once: true, margin: "-100px" }}
       >
-        <h2 className="text-4xl font-bold text-[#333333] text-center mb-12">Education</h2>
-        
+        <h2 className="section-title">Education</h2>
+
         {/* Mobile Swipeable Cards */}
         {isMobile && (
           <div className="relative px-4">
-            <div 
+            <div
               className="overflow-hidden"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <div 
+              <div
                 className="flex transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${activeIndex * 100}%)` }}
               >
                 {educations.map((education, index) => (
                   <div key={index} className="w-full flex-shrink-0">
                     <motion.div
-                      className="bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 min-h-[420px] flex flex-col"
+                      className="card min-h-[420px] flex flex-col"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3 }}
                     >
                       <div className="flex items-center mb-4">
-                        <div className="bg-[#00BFA6] bg-opacity-10 p-2 rounded-full mr-3">
-                          <FaGraduationCap className="text-[#00BFA6] text-2xl" />
+                        <div className="bg-[var(--color-teal)]/10 p-2 rounded-full mr-3">
+                          <FaGraduationCap className="text-[var(--color-teal)] text-2xl" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-semibold text-[#333333]">{education.degree}</h3>
-                          <p className="text-[#333333] opacity-90">{education.institution}</p>
+                          <h3 className="text-xl font-semibold text-slate-100">{education.degree}</h3>
+                          <p className="text-slate-400">{education.institution}</p>
                         </div>
                       </div>
-                      <div className="bg-[#00BFA6]/5 px-3 py-1 rounded-full inline-block mb-3">
-                        <p className="text-sm text-[#333333] italic">{education.duration}</p>
+                      <div className="bg-[var(--color-teal)]/5 px-3 py-1 rounded-full inline-block mb-3">
+                        <p className="text-sm text-slate-400 italic">{education.duration}</p>
                       </div>
-                      <p className="text-[#333333] mb-4">{education.description}</p>
+                      <p className="text-slate-300 mb-4">{education.description}</p>
                       <div>
-                        <h4 className="text-lg font-semibold text-[#333333] mb-2 flex items-center">
-                          <FaAward className="text-[#00BFA6] mr-2 text-sm" />
+                        <h4 className="text-lg font-semibold text-slate-200 mb-2 flex items-center">
+                          <FaAward className="text-[var(--color-teal)] mr-2 text-sm" />
                           Achievements:
                         </h4>
-                        <ul className="list-disc ml-6 space-y-1 text-[#333333]">
+                        <ul className="list-disc ml-6 space-y-1 text-slate-400">
                           {education.achievements.map((achievement, i) => (
                             <li key={i} className="text-base">{achievement}</li>
                           ))}
@@ -165,23 +165,23 @@ const Education = () => {
                 ))}
               </div>
             </div>
-            
+
             {/* Dots for navigation */}
             <div className="flex justify-center mt-6 space-x-2">
               {educations.map((_, index) => (
                 <button
                   key={index}
+                  type="button"
                   onClick={() => handleDotClick(index)}
-                  className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                    activeIndex === index ? 'bg-[#00BFA6]' : 'bg-gray-300'
-                  }`}
+                  className={`w-3 h-3 rounded-full transition-colors duration-300 ${activeIndex === index ? 'bg-[var(--color-teal)]' : 'bg-slate-700'
+                    }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
             </div>
           </div>
         )}
-        
+
         {/* Desktop Layout */}
         {!isMobile && (
           <div className="bg-white bg-opacity-5 backdrop-blur-sm p-6 md:p-8 rounded-xl border border-[#00BFA6]/10 shadow-xl mb-6">
@@ -189,33 +189,32 @@ const Education = () => {
               {educations.map((education, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-[#00BFA6]/10 h-full flex flex-col"
-                  whileHover={{ 
-                    scale: 1.03, 
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    borderColor: "rgba(0, 191, 166, 0.3)"
+                  className="card h-full flex flex-col"
+                  whileHover={{
+                    scale: 1.03,
+                    borderColor: "var(--color-teal)"
                   }}
                   transition={{ duration: 0.3 }}
                 >
                   <div className="flex items-center mb-4">
-                    <div className="bg-[#00BFA6] bg-opacity-10 p-2 rounded-full mr-3">
-                      <FaGraduationCap className="text-[#00BFA6] text-2xl" />
+                    <div className="bg-[var(--color-teal)]/10 p-2 rounded-full mr-3">
+                      <FaGraduationCap className="text-[var(--color-teal)] text-2xl" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-[#333333]">{education.degree}</h3>
-                      <p className="text-[#333333] opacity-90">{education.institution}</p>
+                      <h3 className="text-xl font-semibold text-slate-100">{education.degree}</h3>
+                      <p className="text-slate-400">{education.institution}</p>
                     </div>
                   </div>
-                  <div className="bg-[#00BFA6]/5 px-3 py-1 rounded-full inline-block mb-3 w-fit">
-                    <p className="text-sm text-[#333333] italic">{education.duration}</p>
+                  <div className="bg-[var(--color-teal)]/5 px-3 py-1 rounded-full inline-block mb-3 w-fit">
+                    <p className="text-sm text-slate-400 italic">{education.duration}</p>
                   </div>
-                  <p className="text-[#333333] mb-4">{education.description}</p>
+                  <p className="text-slate-300 mb-4">{education.description}</p>
                   <div className="mt-auto">
-                    <h4 className="text-lg font-semibold text-[#333333] mb-2 flex items-center">
-                      <FaAward className="text-[#00BFA6] mr-2 text-sm" />
+                    <h4 className="text-lg font-semibold text-slate-200 mb-2 flex items-center">
+                      <FaAward className="text-[var(--color-teal)] mr-2 text-sm" />
                       Achievements:
                     </h4>
-                    <ul className="list-disc ml-6 space-y-1 text-[#333333]">
+                    <ul className="list-disc ml-6 space-y-1 text-slate-400">
                       {education.achievements.map((achievement, i) => (
                         <li key={i} className="text-base">{achievement}</li>
                       ))}
