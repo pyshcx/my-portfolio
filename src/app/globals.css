@@ -41,10 +41,20 @@
 }
 
 body {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: var(--font-inter), 'Inter', sans-serif;
   scroll-behavior: smooth;
   background-color: var(--color-bg-deep);
   color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-outfit), 'Outfit', sans-serif;
 }
 
 @layer components {
@@ -54,27 +64,32 @@ body {
 
   .section-title {
     @apply text-4xl font-bold text-slate-50 text-center mb-12 tracking-tight;
+    font-family: var(--font-outfit), 'Outfit', sans-serif;
   }
 
   .section-text {
-    @apply text-lg text-slate-400 leading-relaxed font-light;
+    @apply text-lg text-slate-400 leading-relaxed font-normal;
   }
 
   .card {
-    @apply bg-slate-900 bg-opacity-40 backdrop-blur-xl p-6 rounded-2xl shadow-2xl border border-white/5;
-    transition: all 0.3s ease;
+    @apply bg-slate-900/40 backdrop-blur-xl p-6 rounded-2xl border border-white/5;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
 
   .card:hover {
-    @apply border-white/10 shadow-emerald-500/5;
+    @apply border-white/10 shadow-emerald-500/10 -translate-y-1;
+    background: rgba(15, 23, 42, 0.6);
   }
 
   .btn-primary {
-    @apply bg-[#00f2d1] text-slate-950 py-2.5 px-6 rounded-xl font-medium hover:bg-white transition-all duration-300 shadow-lg shadow-emerald-500/20 active:scale-95;
+    @apply bg-[#00f2d1] text-slate-950 py-2.5 px-6 rounded-xl font-semibold hover:brightness-110 transition-all duration-300 shadow-lg shadow-emerald-500/20 active:scale-95;
+    font-family: var(--font-outfit), 'Outfit', sans-serif;
   }
 
   .btn-rounded {
-    @apply bg-[#00f2d1] text-slate-950 font-bold py-3.5 px-10 rounded-full hover:bg-white hover:shadow-emerald-500/20 transition-all duration-300 active:scale-95;
+    @apply bg-[#00f2d1] text-slate-950 font-bold py-3.5 px-10 rounded-full hover:brightness-110 hover:shadow-emerald-500/30 transition-all duration-300 active:scale-95;
+    font-family: var(--font-outfit), 'Outfit', sans-serif;
   }
 
   .icon-teal {
@@ -85,37 +100,36 @@ body {
     @apply text-slate-50;
   }
 
-  .text-light {
-    @apply text-slate-50;
+  .badge-common {
+    @apply px-4 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-2 transition-all duration-300;
   }
 
-  /* Domain badge utilities */
   .badge-ai {
-    @apply px-3 py-1 rounded-full text-[10px] md:text-xs font-semibold border;
-    background: rgba(0, 242, 209, 0.08);
-    border-color: rgba(0, 242, 209, 0.25);
+    @apply badge-common;
+    background: rgba(0, 242, 209, 0.1);
+    border-color: rgba(0, 242, 209, 0.3);
     color: #00f2d1;
-    letter-spacing: 0.02em;
+    box-shadow: 0 0 10px rgba(0, 242, 209, 0.1);
   }
 
   .badge-cyber {
-    @apply px-3 py-1 rounded-full text-[10px] md:text-xs font-semibold border;
-    background: rgba(249, 115, 22, 0.08);
-    border-color: rgba(249, 115, 22, 0.25);
+    @apply badge-common;
+    background: rgba(249, 115, 22, 0.1);
+    border-color: rgba(249, 115, 22, 0.3);
     color: #f97316;
-    letter-spacing: 0.02em;
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.1);
   }
 
   .badge-dev {
-    @apply px-3 py-1 rounded-full text-[10px] md:text-xs font-semibold border;
-    background: rgba(56, 189, 248, 0.08);
-    border-color: rgba(56, 189, 248, 0.25);
+    @apply badge-common;
+    background: rgba(56, 189, 248, 0.1);
+    border-color: rgba(56, 189, 248, 0.3);
     color: #38bdf8;
-    letter-spacing: 0.02em;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
   }
 
   .font-mono-accent {
-    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    font-family: 'Fira Code', 'Courier New', monospace;
     letter-spacing: 0.04em;
   }
 
@@ -125,6 +139,31 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(0, 191, 166, 0.15);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 191, 166, 0.05);
+  }
+
+  .animate-mesh {
+    background-color: #020617;
+    background-image:
+      radial-gradient(at 0% 0%, hsla(171, 100%, 47%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(199, 89%, 48%, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(25, 95%, 53%, 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(171, 100%, 47%, 0.1) 0px, transparent 50%);
+    animation: mesh 20s ease infinite;
+    background-size: 200% 200%;
+  }
+
+  @keyframes mesh {
+    0% {
+      background-position: 0% 0%;
+    }
+
+    50% {
+      background-position: 100% 100%;
+    }
+
+    100% {
+      background-position: 0% 0%;
+    }
   }
 
   .cyber-glow {

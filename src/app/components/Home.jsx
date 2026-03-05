@@ -75,90 +75,109 @@ const Home = () => {
       className="min-h-screen flex flex-col justify-center items-center text-center relative overflow-hidden bg-cover bg-center"
       style={{ backgroundImage: "url('/lidar-bg.jpg')" }}
     >
-      {/* Dark overlay — slightly deeper */}
-      <div className="absolute inset-0 bg-[var(--color-bg-deep)] opacity-75"></div>
-      <div className="absolute inset-0 section-gradient opacity-20"></div>
+      {/* Mesh Gradient Overlay - reduced opacity to keep image visible */}
+      <div className="absolute inset-0 animate-mesh opacity-40"></div>
 
-      {/* Floating particles */}
+      {/* Deep Overlay for text readability */}
+      <div className="absolute inset-0 bg-slate-950/60 transition-opacity duration-700"></div>
+
+      {/* Floating particles - kept for extra depth but reduced opacity */}
       {isClient && (
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 pointer-events-none">
           {generateParticles().map((particle) => (
-            <div
+            <motion.div
               key={particle.key}
-              className="absolute icon-teal rounded-full opacity-20"
+              className="absolute bg-[var(--color-teal)] rounded-full opacity-10"
               style={{
                 top: particle.top,
                 left: particle.left,
                 width: particle.size,
                 height: particle.size,
-                animation: `float ${particle.duration} linear infinite`,
               }}
-            ></div>
+              animate={{
+                y: [0, -20, 0],
+                opacity: [0.1, 0.2, 0.1],
+              }}
+              transition={{
+                duration: parseFloat(particle.duration),
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            ></motion.div>
           ))}
         </div>
       )}
 
       <motion.div
-        className="relative z-10 px-4 max-w-4xl mx-auto"
+        className="relative z-10 px-4 max-w-5xl mx-auto"
         variants={containerVariants}
         initial="hidden"
-        animate={controls}
+        animate={loading ? "hidden" : "visible"}
       >
-        {/* Name */}
-        <motion.h1
-          className="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-4 text-[var(--color-teal)]"
+        {/* Intro */}
+        <motion.p
+          className="text-[var(--color-teal)] font-mono-accent mb-4 tracking-widest text-sm uppercase"
           variants={itemVariants}
         >
-          Hi, I'm Pranay Shah
+          Intelligence & Security
+        </motion.p>
+
+        {/* Name with glow */}
+        <motion.h1
+          className="text-5xl sm:text-6xl md:text-8xl font-black mb-6 text-white tracking-tight leading-none"
+          variants={itemVariants}
+        >
+          Hi, I'm <span className="text-[var(--color-teal)] drop-shadow-[0_0_15px_rgba(0,242,209,0.3)]">Pranay Shah</span>
         </motion.h1>
 
         {/* Rotating role tagline */}
         <motion.div
-          className="h-10 mb-6 flex items-center justify-center overflow-hidden"
+          className="h-12 mb-8 flex items-center justify-center overflow-hidden"
           variants={itemVariants}
         >
           <AnimatePresence mode="wait">
             <motion.p
               key={roleIndex}
-              className="text-lg sm:text-xl md:text-2xl text-[var(--color-text-secondary)] font-mono-accent"
-              initial={{ opacity: 0, y: 14 }}
+              className="text-xl sm:text-2xl md:text-3xl text-slate-300 font-medium"
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -14 }}
-              transition={{ duration: 0.45, ease: "easeInOut" }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               {roles[roleIndex]}
             </motion.p>
           </AnimatePresence>
         </motion.div>
 
-        {/* Role badge pills */}
+        {/* Role badge pills - Using unified classes */}
         <motion.div
-          className="flex flex-wrap justify-center gap-3 mb-8"
+          className="flex flex-wrap justify-center gap-4 mb-12"
           variants={itemVariants}
         >
           {roleBadges.map(({ label, icon: Icon, badgeClass }) => (
-            <span
+            <motion.span
               key={label}
-              className={`flex items-center gap-1.5 px-4 py-1.5 transition-all duration-300 hover:scale-105 ${badgeClass}`}
+              className={`${badgeClass} text-sm md:text-base cursor-default`}
+              whileHover={{ scale: 1.05, y: -2 }}
             >
-              <Icon className="text-xs" />
+              <Icon className="text-lg" />
               {label}
-            </span>
+            </motion.span>
           ))}
         </motion.div>
 
         {/* CTA */}
         <motion.a
           href="#projects"
-          className="btn-rounded text-lg inline-block"
+          className="btn-rounded text-xl inline-block px-12 py-4"
           variants={itemVariants}
           whileHover={{
             scale: 1.05,
-            boxShadow: "0px 0px 18px rgba(0,191,166,0.6)"
+            boxShadow: "0px 0px 30px rgba(0,242,209,0.4)"
           }}
           whileTap={{ scale: 0.95 }}
         >
-          Explore My Work
+          View Projects
         </motion.a>
       </motion.div>
 

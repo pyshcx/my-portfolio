@@ -6,15 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 // Navigation items — module-level constant so it never triggers re-renders
+// Navigation items labels updated for brevity
 const navItems = [
-  { name: "Home", id: "home" },
   { name: "About", id: "about" },
   { name: "Skills", id: "skills" },
   { name: "Experience", id: "experience" },
   { name: "Projects", id: "projects" },
-  { name: "Education", id: "education" },
-  { name: "Achievements", id: "achievements" },
-  { name: "Articles & Research", id: "articles-research" },
+  { name: "Research", id: "articles-research" },
   { name: "Contact", id: "contact" }
 ];
 

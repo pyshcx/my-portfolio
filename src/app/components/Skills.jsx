@@ -131,38 +131,34 @@ const Skills = () => {
                         style={{ borderColor: current.border }}
                     >
                         {/* Domain header */}
-                        <div className="flex items-center gap-3 mb-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
                             <div
-                                className="p-3 rounded-full"
+                                className="p-4 rounded-2xl w-fit"
                                 style={{ background: current.bg }}
                             >
-                                <current.icon style={{ color: current.accent, fontSize: "1.4rem" }} />
+                                <current.icon style={{ color: current.accent, fontSize: "2rem" }} />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold" style={{ color: current.accent }}>
+                                <h3 className="text-2xl font-bold" style={{ color: current.accent }}>
                                     {current.label}
                                 </h3>
-                                <p className="text-xs text-slate-400">{current.description}</p>
+                                <p className="text-slate-400 max-w-2xl">{current.description}</p>
                             </div>
                         </div>
 
                         {/* Skill pill grid */}
-                        <div className="flex flex-wrap gap-2 mt-4">
+                        <div className="flex flex-wrap gap-3 mt-6">
                             {current.skills.map(({ name, Icon }, i) => (
                                 <motion.span
                                     key={name}
                                     initial={{ opacity: 0, scale: 0.85 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.25, delay: i * 0.04 }}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-all duration-200 hover:scale-105 cursor-default"
-                                    style={{
-                                        color: current.accent,
-                                        background: current.bg,
-                                        borderColor: current.border,
-                                    }}
+                                    className={`${current.badgeClass} cursor-default`}
+                                    whileHover={{ y: -3, scale: 1.05 }}
                                 >
-                                    <Icon className="text-xs" />
-                                    {name}
+                                    <Icon className="text-lg" />
+                                    <span>{name}</span>
                                 </motion.span>
                             ))}
                         </div>

@@ -1,12 +1,17 @@
 import './globals.css';
-import { Poppins } from 'next/font/google';
+import { Outfit, Inter } from 'next/font/google';
 import type { Metadata, Viewport } from 'next';
 
-const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '700'],
+const outfit = Outfit({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-poppins',
+  variable: '--font-outfit',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
 });
 
 export const metadata: Metadata = {
@@ -90,7 +95,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${poppins.className}`}>
+    <html lang="en" className={`${outfit.variable} ${inter.variable}`}>
       <head>
         <link type="image/png" sizes="96x96" rel="icon" href="/icons8-p-96.png" />
         <link rel="apple-touch-icon" href="/icons8-p-96.png" />
