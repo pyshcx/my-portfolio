@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     FaBrain, FaShieldAlt, FaCode,
@@ -87,6 +87,18 @@ const Skills = () => {
     const [active, setActive] = useState("aiml");
     const current = domains.find((d) => d.key === active);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActive((prev) => {
+                const currentIndex = domains.findIndex((d) => d.key === prev);
+                const nextIndex = (currentIndex + 1) % domains.length;
+                return domains[nextIndex].key;
+            });
+        }, 4000); // Auto-switch every 4 seconds
+
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <SectionWrapper id="skills">
             <motion.div
@@ -131,18 +143,18 @@ const Skills = () => {
                         style={{ borderColor: current.border }}
                     >
                         {/* Domain header */}
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-5 mb-8">
                             <div
                                 className="p-4 rounded-2xl w-fit"
-                                style={{ background: current.bg }}
+                                style={{ background: current.bg, border: `1px solid ${current.border}` }}
                             >
-                                <current.icon style={{ color: current.accent, fontSize: "2rem" }} />
+                                <current.icon style={{ color: current.accent, fontSize: "2.2rem" }} />
                             </div>
                             <div>
-                                <h3 className="text-2xl font-bold" style={{ color: current.accent }}>
+                                <h3 className="text-2xl font-bold tracking-tight mb-2" style={{ color: current.accent }}>
                                     {current.label}
                                 </h3>
-                                <p className="text-slate-400 max-w-2xl">{current.description}</p>
+                                <p className="text-text-secondary max-w-2xl text-[15px] sm:text-base leading-relaxed">{current.description}</p>
                             </div>
                         </div>
 
@@ -154,11 +166,11 @@ const Skills = () => {
                                     initial={{ opacity: 0, scale: 0.85 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.25, delay: i * 0.04 }}
-                                    className={`${current.badgeClass} cursor-default`}
-                                    whileHover={{ y: -3, scale: 1.05 }}
+                                    className={`${current.badgeClass} cursor-default py-2.5 px-4 shadow-none`}
+                                    whileHover={{ y: -2, scale: 1.03 }}
                                 >
-                                    <Icon className="text-lg" />
-                                    <span>{name}</span>
+                                    <Icon className="text-xl" />
+                                    <span className="font-medium text-sm">{name}</span>
                                 </motion.span>
                             ))}
                         </div>

@@ -1,22 +1,37 @@
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
       colors: {
+        background: "var(--color-bg-deep)",
+        card: "var(--color-bg-card)",
+        accent: "var(--color-bg-accent)",
         primary: {
-          navy: "#1E3D58",
-          blue: "#3A6EA5",
-          teal: "#00BFA6",
-          lightTeal: "#82E9F5",
+          DEFAULT: "var(--color-teal)",
+          glow: "var(--color-teal-glow)",
+        },
+        secondary: {
+          DEFAULT: "var(--color-info)",
+        },
+        cyber: {
+          DEFAULT: "var(--color-cyber)",
+          glow: "var(--color-cyber-glow)",
         },
         text: {
-          dark: "#333333",
-          light: "#F5F5F5",
-          gray: "#D3D3D3",
-        }
+          primary: "var(--color-text-primary)",
+          secondary: "var(--color-text-secondary)",
+          dim: "var(--color-text-dim)",
+        },
+        border: {
+          card: "var(--color-card-border)",
+        },
       },
       backgroundImage: {
-        'gradient-primary': 'linear-gradient(to bottom right, var(--tw-gradient-stops))',
+        'gradient-primary': 'radial-gradient(circle at top center, var(--color-bg-accent) 0%, var(--color-bg-deep) 100%)',
       },
     },
   },

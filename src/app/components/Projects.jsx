@@ -48,22 +48,22 @@ const projects = [
 /* domain → style map */
 const domainStyles = {
   cyber: {
-    border: "border-[var(--color-cyber)]/25 hover:border-[var(--color-cyber)]/50",
-    iconBg: "rgba(255,107,53,0.15)",
+    border: "border-cyber/25 hover:border-cyber/50",
+    iconBg: "rgba(249,115,22,0.08)",
     iconColor: "var(--color-cyber)",
-    badge: <span className="badge-cyber">🔒 Cybersecurity</span>,
+    badge: <span className="badge-cyber shadow-none">🔒 Cybersecurity</span>,
   },
   aiml: {
-    border: "border-[var(--color-teal)]/15 hover:border-[var(--color-teal)]/35",
-    iconBg: "rgba(0,191,166,0.12)",
+    border: "border-primary/15 hover:border-primary/35",
+    iconBg: "rgba(0,242,209,0.06)",
     iconColor: "var(--color-teal)",
-    badge: <span className="badge-ai">🤖 AI / ML</span>,
+    badge: <span className="badge-ai shadow-none">🤖 AI / ML</span>,
   },
   dev: {
-    border: "border-[var(--color-info)]/20 hover:border-[var(--color-info)]/40",
-    iconBg: "rgba(130,233,245,0.10)",
+    border: "border-secondary/20 hover:border-secondary/40",
+    iconBg: "rgba(56,189,248,0.05)",
     iconColor: "var(--color-info)",
-    badge: <span className="badge-dev">💻 Full-Stack</span>,
+    badge: <span className="badge-dev shadow-none">💻 Full-Stack</span>,
   },
 };
 
@@ -106,7 +106,7 @@ const Projects = () => {
                 aria-label="Previous Project"
                 type="button"
                 onClick={() => { prevSlide(); pauseTemporarily(); }}
-                className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-[var(--color-teal)] bg-opacity-90 text-slate-950 shadow-lg hover:bg-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]"
+                className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-primary/90 text-slate-950 shadow-lg hover:bg-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary active:scale-[0.98]"
               >
                 <FaChevronLeft className="text-sm md:text-base" />
               </button>
@@ -115,7 +115,7 @@ const Projects = () => {
                 aria-label="Next Project"
                 type="button"
                 onClick={() => { nextSlide(); pauseTemporarily(); }}
-                className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-[var(--color-teal)] bg-opacity-90 text-slate-950 shadow-lg hover:bg-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]"
+                className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-primary/90 text-slate-950 shadow-lg hover:bg-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary active:scale-[0.98]"
               >
                 <FaChevronRight className="text-sm md:text-base" />
               </button>
@@ -177,7 +177,7 @@ const Projects = () => {
                             </div>
 
                             <div className="flex-grow">
-                              <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-4">
+                              <p className="text-text-secondary text-sm md:text-base leading-relaxed mb-4">
                                 {project.description}
                               </p>
                             </div>
@@ -193,7 +193,7 @@ const Projects = () => {
                                   rel="noopener noreferrer"
                                   whileHover={{ scale: 1.02 }}
                                   whileTap={{ scale: 0.98 }}
-                                  className="w-full bg-transparent border-2 border-[var(--color-teal)]/40 text-[var(--color-teal)] py-3 px-5 rounded-lg hover:bg-[var(--color-teal)]/5 hover:border-[var(--color-teal)]/60 transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium"
+                                  className="w-full bg-transparent border-2 border-primary/40 text-primary py-3 px-5 rounded-xl hover:bg-primary/5 hover:border-primary/60 transition-all duration-300 flex items-center justify-center text-sm md:text-base font-semibold"
                                 >
                                   <FaExternalLinkAlt className="mr-2 text-sm" />
                                   Live Demo
@@ -205,7 +205,7 @@ const Projects = () => {
                                   rel="noopener noreferrer"
                                   whileHover={{ scale: 1.02 }}
                                   whileTap={{ scale: 0.98 }}
-                                  className="w-full bg-[var(--color-teal)] text-slate-950 py-3 px-5 rounded-lg hover:bg-white transition-all duration-300 flex items-center justify-center text-sm md:text-base font-medium shadow-md hover:shadow-lg"
+                                  className="w-full bg-primary text-slate-950 py-3 px-5 rounded-xl hover:bg-white transition-all duration-300 flex items-center justify-center text-sm md:text-base font-semibold shadow-md active:scale-[0.98]"
                                 >
                                   <FaGithub className="mr-2 text-base" />
                                   View on GitHub
@@ -218,7 +218,7 @@ const Projects = () => {
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="w-full btn-primary flex items-center justify-center"
+                                className="w-full btn-primary flex items-center justify-center py-3 rounded-xl shadow-none"
                               >
                                 <FaGithub className="mr-2 text-base" />
                                 View on GitHub
@@ -241,9 +241,9 @@ const Projects = () => {
                 key={idx}
                 type="button"
                 onClick={() => { pauseTemporarily(); goToSlide(idx); }}
-                className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)] focus:ring-offset-1 ${activeIndex === idx
-                    ? "bg-[var(--color-teal)] scale-125 shadow-md"
-                    : "bg-slate-700 hover:bg-slate-600 hover:scale-110"
+                className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:ring-offset-background ${activeIndex === idx
+                  ? "bg-primary scale-125 shadow-md"
+                  : "bg-slate-700 hover:bg-slate-600 hover:scale-110"
                   }`}
                 aria-label={`Go to project ${idx + 1}`}
               />

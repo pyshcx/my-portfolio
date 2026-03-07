@@ -16,7 +16,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Pranay Shah | AI & ML Engineer',
+    default: 'Pranay Shah',
     template: '%s | Pranay Shah'
   },
   description: 'Portfolio of Pranay Shah, showcasing expertise in AI, ML, autonomous systems, and Formula Student projects. Passionate about path planning, SLAM, and computer vision.',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://pranayshah.online',
-    title: 'Pranay Shah | AI & ML Engineer',
+    title: 'Pranay Shah',
     description: 'Portfolio showcasing AI, ML, and autonomous systems expertise with Formula Student experience',
     siteName: 'Pranay Shah Portfolio',
     images: [
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pranay Shah | AI & ML Engineer',
+    title: 'Pranay Shah',
     description: 'Portfolio showcasing AI, ML, and autonomous systems expertise',
     creator: '@pyshcx',
     images: ['/og-image.jpg'],
@@ -103,7 +103,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#00BFA6" />
       </head>
       <body
-        className="bg-gradient-to-br from-[#1E3D58] via-[#3A6EA5] to-[#00BFA6] antialiased"
+        className="bg-background text-text-primary antialiased"
         suppressHydrationWarning
       >
         {children}

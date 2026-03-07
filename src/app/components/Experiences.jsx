@@ -14,9 +14,8 @@ const experiences = [
     date: "Jan 2026 – Present",
     domain: "cyber",
     points: [
-      "Developing a RAG-based document parser to automate Data Flow Diagram (DFD) generation, streamlining security architecture visualization and threat modeling workflows.",
-      "Contributing to Layer 7 Web Application Firewall (WAF) projects to enhance perimeter security and mitigate application-level vulnerabilities.",
-      "Conducting comprehensive Architecture Security Reviews (ASR) to identify and remediate design-level security flaws in distributed systems."
+      "Developing a RAG-based document parser to automate DFD generation and threat modeling workflows.",
+      "Conducting Architecture Security Reviews (ASR) and enhancing WAF for application-level perimeter security."
     ]
   },
   {
@@ -227,8 +226,8 @@ const Experiences = () => {
                 type="button"
                 onClick={() => { pauseTemporarily(); goToSlide(idx); }}
                 className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)] focus:ring-offset-1 ${activeIndex === idx
-                    ? "bg-[var(--color-teal)] scale-125 shadow-md"
-                    : "bg-slate-700 hover:bg-slate-600 hover:scale-110"
+                  ? "bg-[var(--color-teal)] scale-125 shadow-md"
+                  : "bg-slate-700 hover:bg-slate-600 hover:scale-110"
                   }`}
                 aria-label={`Go to experience ${idx + 1}`}
               />

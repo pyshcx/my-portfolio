@@ -6,8 +6,9 @@ import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useLoading } from './LoadingContext';
 
 const roles = [
-  "Software Developer · AI/ML Engineer",
-  "Cybersecurity Researcher",
+  "Cybersecurity Enthusiast",
+  "AI & ML Researcher",
+  "Software Development",
   "Building Secure Intelligent Systems",
 ];
 
@@ -72,14 +73,10 @@ const Home = () => {
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col justify-center items-center text-center relative overflow-hidden bg-cover bg-center"
-      style={{ backgroundImage: "url('/lidar-bg.jpg')" }}
+      className="min-h-screen flex flex-col justify-center items-center text-center relative overflow-hidden bg-slate-950 bg-[url('/lidar-bg.jpg')] bg-cover bg-center bg-no-repeat"
     >
-      {/* Mesh Gradient Overlay - reduced opacity to keep image visible */}
-      <div className="absolute inset-0 animate-mesh opacity-40"></div>
-
-      {/* Deep Overlay for text readability */}
-      <div className="absolute inset-0 bg-slate-950/60 transition-opacity duration-700"></div>
+      {/* Lighter overlay to let the car background shine through */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-background/80 pointer-events-none"></div>
 
       {/* Floating particles - kept for extra depth but reduced opacity */}
       {isClient && (
@@ -87,7 +84,7 @@ const Home = () => {
           {particles.map((particle) => (
             <motion.div
               key={particle.key}
-              className="absolute bg-[var(--color-teal)] rounded-full opacity-10"
+              className="absolute bg-primary rounded-full opacity-[0.03]"
               style={{
                 top: particle.top,
                 left: particle.left,
@@ -116,7 +113,7 @@ const Home = () => {
       >
         {/* Intro */}
         <motion.p
-          className="text-[var(--color-teal)] font-mono-accent mb-4 tracking-widest text-sm uppercase"
+          className="text-primary font-mono-accent mb-4 tracking-widest text-sm uppercase opacity-90"
           variants={itemVariants}
         >
           Intelligence & Security
@@ -124,15 +121,15 @@ const Home = () => {
 
         {/* Name with glow */}
         <motion.h1
-          className="text-5xl sm:text-6xl md:text-8xl font-black mb-6 text-white tracking-tight leading-none"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 text-white tracking-tight leading-[1.1]"
           variants={itemVariants}
         >
-          Hi, I'm <span className="text-[var(--color-teal)] drop-shadow-[0_0_15px_rgba(0,242,209,0.3)]">Pranay Shah</span>
+          Hi, I'm <span className="text-primary drop-shadow-lg">Pranay Shah</span>
         </motion.h1>
 
         {/* Rotating role tagline */}
         <motion.div
-          className="h-12 mb-8 flex items-center justify-center overflow-hidden"
+          className="h-12 md:h-16 mb-8 flex items-center justify-center overflow-hidden"
           variants={itemVariants}
         >
           <AnimatePresence mode="wait">
@@ -169,13 +166,13 @@ const Home = () => {
         {/* CTA */}
         <motion.a
           href="#projects"
-          className="btn-rounded text-xl inline-block px-12 py-4"
+          className="btn-rounded text-lg md:text-xl inline-block px-10 py-3.5 md:px-12 md:py-4 mt-4"
           variants={itemVariants}
           whileHover={{
-            scale: 1.05,
-            boxShadow: "0px 0px 30px rgba(0,242,209,0.4)"
+            scale: 1.02,
+            boxShadow: "0px 10px 40px -10px var(--color-teal-glow)"
           }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.98 }}
         >
           View Projects
         </motion.a>

@@ -21,7 +21,7 @@ const Education = () => {
       duration: "2022 - 2026",
       description: "Specializing in AI/ML and Computer Vision with a focus on autonomous systems.",
       achievements: [
-        "CGPA: 8.63/10",
+        "CGPA: 8.72/10",
         "Member of Autonomous Research Center (ARC)",
         "Path Planning Lead of Team Ojas Racing",
       ],
@@ -30,7 +30,7 @@ const Education = () => {
       degree: "Higher Secondary Education",
       institution: "DAV International School",
       duration: "2008 - 2022",
-      description: "Focused on Physics, Chemistry, Mathematics, and Computer Science.",
+      description: "Focused on Physics, Chemistry, Mathematics, Computer Science and Economics.",
       achievements: ["Class 12th: 88%", "Class 10th: 94%"],
     },
   ];
@@ -137,26 +137,26 @@ const Education = () => {
                       transition={{ duration: 0.3 }}
                     >
                       <div className="flex items-center mb-4">
-                        <div className="bg-[var(--color-teal)]/10 p-2 rounded-full mr-3">
-                          <FaGraduationCap className="text-[var(--color-teal)] text-2xl" />
+                        <div className="bg-primary/10 p-2 rounded-full mr-3">
+                          <FaGraduationCap className="text-primary text-2xl" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-semibold text-slate-100">{education.degree}</h3>
-                          <p className="text-slate-400">{education.institution}</p>
+                          <h3 className="text-lg md:text-xl font-bold tracking-tight text-white mb-1">{education.degree}</h3>
+                          <p className="text-text-secondary text-sm md:text-base font-medium">{education.institution}</p>
                         </div>
                       </div>
-                      <div className="bg-[var(--color-teal)]/5 px-3 py-1 rounded-full inline-block mb-3">
-                        <p className="text-sm text-slate-400 italic">{education.duration}</p>
+                      <div className="bg-primary/5 px-4 py-1.5 rounded-full inline-block mb-4 border border-primary/10 items-center justify-center w-max">
+                        <p className="text-xs md:text-sm font-mono-accent text-primary tracking-wide opacity-90">{education.duration}</p>
                       </div>
-                      <p className="text-slate-300 mb-4">{education.description}</p>
+                      <p className="text-text-secondary text-[15px] sm:text-base leading-relaxed mb-6">{education.description}</p>
                       <div>
-                        <h4 className="text-lg font-semibold text-slate-200 mb-2 flex items-center">
-                          <FaAward className="text-[var(--color-teal)] mr-2 text-sm" />
-                          Achievements:
+                        <h4 className="text-base font-bold text-white mb-3 flex items-center">
+                          <FaAward className="text-primary mr-2 text-base" />
+                          Achievements
                         </h4>
-                        <ul className="list-disc ml-6 space-y-1 text-slate-400">
+                        <ul className="list-none space-y-2 text-text-secondary">
                           {education.achievements.map((achievement, i) => (
-                            <li key={i} className="text-base">{achievement}</li>
+                            <li key={i} className="text-sm md:text-base relative pl-4 before:content-['▹'] before:absolute before:left-0 before:text-primary/60">{achievement}</li>
                           ))}
                         </ul>
                       </div>
@@ -184,45 +184,38 @@ const Education = () => {
 
         {/* Desktop Layout */}
         {!isMobile && (
-          <div className="bg-white bg-opacity-5 backdrop-blur-sm p-6 md:p-8 rounded-xl border border-[#00BFA6]/10 shadow-xl mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {educations.map((education, index) => (
-                <motion.div
-                  key={index}
-                  className="card h-full flex flex-col"
-                  whileHover={{
-                    scale: 1.03,
-                    borderColor: "var(--color-teal)"
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex items-center mb-4">
-                    <div className="bg-[var(--color-teal)]/10 p-2 rounded-full mr-3">
-                      <FaGraduationCap className="text-[var(--color-teal)] text-2xl" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-slate-100">{education.degree}</h3>
-                      <p className="text-slate-400">{education.institution}</p>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-6xl mx-auto">
+            {educations.map((education, index) => (
+              <motion.div
+                key={index}
+                className="card h-full flex flex-col"
+              >
+                <div className="flex items-center mb-5">
+                  <div className="bg-primary/10 p-3 rounded-2xl mr-4">
+                    <FaGraduationCap className="text-primary text-2xl" />
                   </div>
-                  <div className="bg-[var(--color-teal)]/5 px-3 py-1 rounded-full inline-block mb-3 w-fit">
-                    <p className="text-sm text-slate-400 italic">{education.duration}</p>
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold tracking-tight text-white mb-1">{education.degree}</h3>
+                    <p className="text-text-secondary font-medium">{education.institution}</p>
                   </div>
-                  <p className="text-slate-300 mb-4">{education.description}</p>
-                  <div className="mt-auto">
-                    <h4 className="text-lg font-semibold text-slate-200 mb-2 flex items-center">
-                      <FaAward className="text-[var(--color-teal)] mr-2 text-sm" />
-                      Achievements:
-                    </h4>
-                    <ul className="list-disc ml-6 space-y-1 text-slate-400">
-                      {education.achievements.map((achievement, i) => (
-                        <li key={i} className="text-base">{achievement}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
+                <div className="bg-primary/5 px-4 py-1.5 rounded-full inline-block mb-5 border border-primary/10 w-fit">
+                  <p className="text-xs md:text-sm font-mono-accent text-primary tracking-widest opacity-90">{education.duration}</p>
+                </div>
+                <p className="text-text-secondary text-sm md:text-base leading-relaxed mb-6">{education.description}</p>
+                <div className="mt-auto">
+                  <h4 className="text-base font-bold text-white mb-3 flex items-center">
+                    <FaAward className="text-primary mr-2 text-base" />
+                    Achievements
+                  </h4>
+                  <ul className="list-none space-y-2 text-text-secondary">
+                    {education.achievements.map((achievement, i) => (
+                      <li key={i} className="text-[15px] relative pl-4 before:content-['▹'] before:absolute before:left-0 before:text-primary/60">{achievement}</li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            ))}
           </div>
         )}
       </motion.div>

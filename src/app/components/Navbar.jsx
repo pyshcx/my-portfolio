@@ -226,35 +226,31 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled
-          ? "bg-slate-950/80 backdrop-blur-md shadow-lg py-2"
-          : "bg-transparent py-3 md:py-4"
+        className={`fixed w-[95%] md:w-3/4 max-w-4xl left-1/2 -translate-x-1/2 top-4 z-50 transition-all duration-400 rounded-full border ${scrolled
+          ? "bg-background/70 border-white/10 shadow-2xl py-2.5 backdrop-blur-xl"
+          : "bg-background/50 border-white/5 shadow-lg py-3.5 backdrop-blur-md"
           }`}
-        style={{
-          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)',
-          backdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)'
-        }}
       >
         <div className="container mx-auto flex justify-between items-center px-4 md:px-6">
           <motion.h1
             whileHover={{ scale: 1.05 }}
-            className="text-lg sm:text-xl md:text-2xl font-bold text-[var(--color-teal)] transition-all duration-300 z-50"
+            className="text-base sm:text-lg font-extrabold text-primary transition-all duration-300 z-50"
           >
             <button
               onClick={(e) => handleNavClick("home", e)}
-              className="block text-left"
+              className="block text-left tracking-tight"
               type="button"
             >
-              Pranay Shah
+              PS.
             </button>
           </motion.h1>
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex space-x-4 lg:space-x-6">
             {navItems.map((item) => (
-              <motion.li key={item.name} className="relative" whileHover={{ y: -2 }}>
+              <motion.li key={item.name} className="relative px-2 py-1" whileHover={{ y: -1 }}>
                 <button
-                  className={`text-xs lg:text-sm xl:text-base transition-all duration-300 hover:text-[var(--color-teal)] ${activeSection === item.id ? "text-[var(--color-teal)]" : "text-slate-200"
+                  className={`text-xs lg:text-sm font-medium transition-all duration-300 hover:text-primary ${activeSection === item.id ? "text-primary" : "text-text-secondary"
                     }`}
                   onClick={(e) => handleNavClick(item.id, e)}
                   type="button"
@@ -263,7 +259,7 @@ const Navbar = () => {
                   {activeSection === item.id && (
                     <motion.span
                       layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 w-full h-0.5 bg-[var(--color-teal)] rounded-full"
+                      className="absolute -bottom-1 left-1.5 right-1.5 h-0.5 bg-primary/60 rounded-full"
                     />
                   )}
                 </button>
@@ -279,16 +275,16 @@ const Navbar = () => {
               href="https://drive.google.com/file/d/1oXH_wN1qGZ2MvcIIzJtyyilr9FvP-oVt/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center bg-[var(--color-teal)] text-slate-950 py-2 px-3 lg:px-4 rounded-lg hover:bg-white transition-all duration-300 text-sm lg:text-base"
+              className="hidden md:flex items-center bg-primary/10 border border-primary/20 text-primary py-1.5 px-3 lg:px-4 rounded-full hover:bg-primary hover:text-slate-950 transition-all duration-300 text-xs lg:text-sm font-semibold"
             >
-              <HiDocumentText className="mr-1 lg:mr-2 text-lg lg:text-xl" />
+              <HiDocumentText className="mr-1 lg:mr-1.5 text-base lg:text-lg" />
               Resume
             </motion.a>
 
             {/* Mobile Menu Button */}
             <motion.button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-white bg-slate-800 p-2.5 rounded-lg backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)] z-50 relative"
+              className="md:hidden text-text-primary bg-background/50 p-2 rounded-full border border-white/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary z-50 relative"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -317,61 +313,46 @@ const Navbar = () => {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden bg-slate-900 border-t border-slate-800 absolute top-full left-0 w-full shadow-2xl"
-              style={{
-                WebkitBackdropFilter: 'blur(12px)',
-                backdropFilter: 'blur(12px)'
-              }}
+              initial={{ opacity: 0, scale: 0.95, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -20 }}
+              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+              className="md:hidden bg-background/90 border border-white/10 absolute top-full left-0 right-0 mt-4 rounded-3xl shadow-2xl backdrop-blur-2xl"
             >
-              <ul className="flex flex-col py-4">
+              <ul className="flex flex-col py-4 px-2">
                 {navItems.map((item, index) => (
                   <motion.li
                     key={item.name}
-                    className="px-6 py-3"
-                    initial={{ opacity: 0, x: -20 }}
+                    className="px-4 py-2"
+                    initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ backgroundColor: "rgba(0, 191, 166, 0.1)" }}
+                    transition={{ delay: index * 0.05 }}
                   >
                     <button
-                      className={`block w-full text-left text-base transition-all duration-300 hover:text-[var(--color-teal)] ${activeSection === item.id ? "text-[var(--color-teal)] font-semibold" : "text-white"
+                      className={`block w-full text-left text-sm font-medium transition-all duration-300 p-3 rounded-xl ${activeSection === item.id ? "bg-primary/10 text-primary" : "text-text-secondary hover:text-text-primary hover:bg-white/5"
                         }`}
                       onClick={(e) => handleNavClick(item.id, e)}
                       type="button"
-                      style={{
-                        WebkitTapHighlightColor: 'transparent',
-                        touchAction: 'manipulation'
-                      }}
                     >
                       {item.name}
                     </button>
                   </motion.li>
                 ))}
                 <motion.li
-                  className="px-6 py-3 pt-6"
-                  initial={{ opacity: 0, y: 20 }}
+                  className="px-6 py-4 mt-2 border-t border-white/5"
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: navItems.length * 0.1 }}
+                  transition={{ delay: navItems.length * 0.05 }}
                 >
                   <motion.a
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
                     href="https://drive.google.com/file/d/1oXH_wN1qGZ2MvcIIzJtyyilr9FvP-oVt/view?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-[var(--color-teal)] text-slate-950 py-3 px-4 rounded-lg hover:bg-white transition-all duration-300 text-base font-medium shadow-lg"
+                    className="flex items-center justify-center bg-primary/10 border border-primary/20 text-primary py-3 px-4 rounded-full transition-all duration-300 text-sm font-semibold active:scale-[0.98]"
                     onClick={() => setMobileMenuOpen(false)}
-                    style={{
-                      WebkitTapHighlightColor: 'transparent',
-                      touchAction: 'manipulation'
-                    }}
                   >
-                    <HiDocumentText className="mr-2 text-xl" />
-                    Resume
+                    <HiDocumentText className="mr-2 text-lg" />
+                    View Resume
                   </motion.a>
                 </motion.li>
               </ul>
