@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { FaChevronDown, FaShieldAlt, FaBrain, FaCode } from 'react-icons/fa';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useLoading } from './LoadingContext';
@@ -38,7 +38,7 @@ const Home = () => {
     return () => clearInterval(id);
   }, []);
 
-  const generateParticles = () => {
+  const particles = useMemo(() => {
     return [...Array(50)].map((_, i) => ({
       key: i,
       top: `${Math.random() * 100}%`,
@@ -46,7 +46,7 @@ const Home = () => {
       size: `${Math.random() * 5 + 1}px`,
       duration: `${Math.random() * 10 + 5}s`,
     }));
-  };
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -84,7 +84,7 @@ const Home = () => {
       {/* Floating particles - kept for extra depth but reduced opacity */}
       {isClient && (
         <div className="absolute inset-0 pointer-events-none">
-          {generateParticles().map((particle) => (
+          {particles.map((particle) => (
             <motion.div
               key={particle.key}
               className="absolute bg-[var(--color-teal)] rounded-full opacity-10"

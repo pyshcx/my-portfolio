@@ -219,10 +219,6 @@ const Navbar = () => {
     }, mobileMenuOpen ? 300 : 0);
   }, [mobileMenuOpen]);
 
-  // Don't render until mounted to avoid hydration issues
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <>
