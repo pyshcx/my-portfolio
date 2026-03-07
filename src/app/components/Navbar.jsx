@@ -223,10 +223,10 @@ const Navbar = () => {
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
+        initial={{ y: -100, x: "-50%" }}
+        animate={{ y: 0, x: "-50%" }}
         transition={{ duration: 0.5 }}
-        className={`fixed w-[95%] md:w-3/4 max-w-4xl left-1/2 -translate-x-1/2 top-4 z-50 transition-all duration-400 rounded-full border ${scrolled
+        className={`fixed w-[95%] md:w-3/4 max-w-4xl left-1/2 top-4 z-50 transition-all duration-400 rounded-full border ${scrolled
           ? "bg-background/70 border-white/10 shadow-2xl py-2.5 backdrop-blur-xl"
           : "bg-background/50 border-white/5 shadow-lg py-3.5 backdrop-blur-md"
           }`}
